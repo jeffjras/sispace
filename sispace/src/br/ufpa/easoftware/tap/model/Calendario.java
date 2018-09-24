@@ -11,9 +11,9 @@ package br.ufpa.easoftware.tap.model;
  */
 public class Calendario {
     private int id;
-    private Disciplina disciplina;
+    private Disciplinas disciplina;
     private Cronograma cronograma;
-    private Evento evento;
+    private Eventos evento;
     private int dia;
     private int mes;
     private int ano;
@@ -36,14 +36,14 @@ public class Calendario {
     /**
      * @return the disciplina
      */
-    public Disciplina getDisciplina() {
+    public Disciplinas getDisciplina() {
         return disciplina;
     }
 
     /**
      * @param disciplina the disciplina to set
      */
-    public void setDisciplina(Disciplina disciplina) {
+    public void setDisciplina(Disciplinas disciplina) {
         this.disciplina = disciplina;
     }
 
@@ -64,14 +64,14 @@ public class Calendario {
     /**
      * @return the evento
      */
-    public Evento getEvento() {
+    public Eventos getEvento() {
         return evento;
     }
 
     /**
      * @param evento the evento to set
      */
-    public void setEvento(Evento evento) {
+    public void setEvento(Eventos evento) {
         this.evento = evento;
     }
 

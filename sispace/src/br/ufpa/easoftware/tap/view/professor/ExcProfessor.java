@@ -5,8 +5,8 @@
  */
 package br.ufpa.easoftware.tap.view.professor;
 
-import br.ufpa.easoftware.tap.dao.DAOProfessor;
-import br.ufpa.easoftware.tap.model.Professor;
+import br.ufpa.easoftware.tap.dao.DAOProfessores;
+import br.ufpa.easoftware.tap.model.Professores;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -17,8 +17,8 @@ import javax.swing.JOptionPane;
  */
 public class ExcProfessor extends javax.swing.JFrame {
 
-    Professor prof;
-    DAOProfessor daoProessor;
+    Professores prof;
+    DAOProfessores daoProessor;
     String[] dadosProf = new String[3];
     List lista = new ArrayList();
     
@@ -27,7 +27,7 @@ public class ExcProfessor extends javax.swing.JFrame {
      */    
     public ExcProfessor() {
         initComponents();
-        prof = new Professor();
+        prof = new Professores();
     }
 
     /**
@@ -135,7 +135,7 @@ public class ExcProfessor extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:                                                   
-        daoProessor = new DAOProfessor();
+        daoProessor = new DAOProfessores();
         //prod.setId(Integer.parseInt(jTextField1.getText()));
         if (!jTFMatricula.getText().equals("")) {
             prof.setId(Integer.parseInt(jTFMatricula.getText()));            

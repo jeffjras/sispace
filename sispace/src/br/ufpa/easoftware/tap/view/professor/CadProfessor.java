@@ -5,8 +5,8 @@
  */
 package br.ufpa.easoftware.tap.view.professor;
 
-import br.ufpa.easoftware.tap.dao.DAOProfessor;
-import br.ufpa.easoftware.tap.model.Professor;
+import br.ufpa.easoftware.tap.dao.DAOProfessores;
+import br.ufpa.easoftware.tap.model.Professores;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -95,11 +95,11 @@ public class CadProfessor extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:        
-        Professor prof = new Professor();
+        Professores prof = new Professores();
         //prof.setId(Integer.parseInt(jTFMatricula.getText()));
         prof.setNome(jTFNome.getText());
         prof.setStatus(1);       
-        DAOProfessor daoProfessor = new DAOProfessor();
+        DAOProfessores daoProfessor = new DAOProfessores();
         daoProfessor.inserir(prof);
         JOptionPane.showMessageDialog(null, "Professor inserido com sucesso!");
         this.dispose();

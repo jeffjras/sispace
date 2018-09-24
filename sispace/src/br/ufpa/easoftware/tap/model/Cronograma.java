@@ -15,7 +15,7 @@ public class Cronograma {
     private int id;
     private Date data;
     private String descricao;
-    private int ano_letivo;
+    private int anoLetivo;
     private int status;
 
     /**
@@ -63,15 +63,15 @@ public class Cronograma {
     /**
      * @return the ano_letivo
      */
-    public int getAno_letivo() {
-        return ano_letivo;
+    public int getAnoLetivo() {
+        return anoLetivo;
     }
 
     /**
      * @param ano_letivo the ano_letivo to set
      */
-    public void setAno_letivo(int ano_letivo) {
-        this.ano_letivo = ano_letivo;
+    public void setAnoLetivo(int anoLetivo) {
+        this.anoLetivo = anoLetivo;
     }
 
     /**

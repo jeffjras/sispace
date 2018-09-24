@@ -5,7 +5,7 @@
  */
 package br.ufpa.easoftware.tap.view.professor;
 
-import br.ufpa.easoftware.tap.dao.DAOProfessor;
+import br.ufpa.easoftware.tap.dao.DAOProfessores;
 
 /**
  *
@@ -21,7 +21,7 @@ public class ListProfessor extends javax.swing.JFrame {
     }
     public ListProfessor(int tipo) {
         initComponents();
-        DAOProfessor daoProfessor = new DAOProfessor();   
+        DAOProfessores daoProfessor = new DAOProfessores();   
         String[] dadosProfessor = null;    
         if (tipo == 1) {
              dadosProfessor = daoProfessor.listarProfessorPorId(0, "id_professor");

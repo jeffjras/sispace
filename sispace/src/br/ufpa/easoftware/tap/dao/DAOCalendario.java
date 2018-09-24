@@ -5,7 +5,9 @@
  */
 package br.ufpa.easoftware.tap.dao;
 
-import br.ufpa.easoftware.tap.model.Alunos;
+import br.ufpa.easoftware.tap.model.Calendario;
+import br.ufpa.easoftware.tap.model.Calendario;
+import br.ufpa.easoftware.tap.model.Eventos;
 import br.ufpa.easoftware.tap.utils.Conexao;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -25,19 +27,22 @@ public class DAOCalendario {
     Statement stmt;
     ResultSet rs;
     int linhasAfetadas=0;
-    List<Alunos> dados;
+    List<Calendario> dados;
     
     public DAOCalendario() {
         conn = new Conexao();
     }
     
-    public void inserir(Alunos alunos) {  
-        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-        String ingresso = DATE_FORMAT.format(alunos.getDataIngresso());        
-        
-        sql = "INSERT INTO alunos(matricula, nome, endereco, telefone, data_ingresso) VALUES("+ alunos.getMatricula() +",'"
-              + alunos.getNome()+"','"+alunos.getEndereco()+"','"
-              + alunos.getTelefone()+"','"+ingresso+"')";        
+    public void inserir(Calendario calendario) {                  
+        sql = "INSERT INTO calendario(id_disciplina, id_cronograma, "
+              + "id_evento, dia, mes, ano, status) "
+              + "VALUES("
+              + calendario.getDisciplina().getId() +","
+              + calendario.getCronograma().getId()
+              +","+calendario.getEvento().getId()
+              +","+calendario.getDia()+","+ calendario.getMes() 
+              +", "+ calendario.getMes() +", "+ calendario.getAno() 
+              +", "+calendario.getStatus()+")";        
         try {                         
             if (conn.conectar()) {                
                 stmt = conn.getConn().createStatement();                                 
@@ -51,12 +56,13 @@ public class DAOCalendario {
         }           
     }     
     
-    public void atualizar(Alunos alunos) {        
-        SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-        String ingresso = DATE_FORMAT.format(alunos.getDataIngresso()); 
-        
-        sql = "UPDATE alunos SET nome ='"+alunos.getNome()+"',endereco='"+alunos.getEndereco()+
-                      "',telefone='"+alunos.getTelefone()+"', data_ingresso='"+ingresso+"' WHERE matricula="+alunos.getMatricula();                      
+    public void atualizar(Calendario calendario) {                       
+        sql = "UPDATE calendario SET id_disciplina ="+calendario.getDisciplina().getId()+",id_cronograma="+calendario.getCronograma().getId()
+                + ",id_evento="+calendario.getEvento().getId()+", "
+                + "dia="+calendario.getDia()+", "
+                + "mes="+calendario.getMes()+", "
+                + "ano="+calendario.getAno()+" "
+                + "WHERE id="+calendario.getId();                      
         try {
             Conexao conn = new Conexao(); 
             if (conn.conectar()) {                
@@ -70,8 +76,8 @@ public class DAOCalendario {
         }        
     } 
     
-    public void delete(Alunos alunos) {        
-        sql = "DELETE FROM alunos WHERE matricula="+alunos.getMatricula();                      
+    public void delete(Calendario calendario) {        
+        sql = "DELETE FROM calendario WHERE id_calendario="+calendario.getId();                      
         try {
             Conexao conn = new Conexao(); 
             if (conn.conectar()) {                
@@ -85,7 +91,7 @@ public class DAOCalendario {
     } 
             
     public String[] listar(){
-        sql = "SELECT * FROM alunos";
+        sql = "SELECT * FROM calendario";
         String[] retorno = new String[30];                
         int cont=-1;
         try {            
@@ -94,31 +100,34 @@ public class DAOCalendario {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                        
-                    int id = rs.getInt("matricula");
-                    String nome = rs.getString("nome");
-                    double telefone = rs.getDouble("telefone");                    
-                    retorno[cont] = id+"       " + nome.trim() + "                      " + telefone + "\n";                    
+                    int id = rs.getInt("id");                    
+                    int idDisciplina = rs.getInt("id_disciplina");
+                    int idCronograma = rs.getInt("id_cronograma");
+                    int idEvento = rs.getInt("id_evento");
+                    int dia      = rs.getInt("dia");
+                    int mes     = rs.getInt("mes");
+                    int ano     = rs.getInt("ano");                    
+                    retorno[cont] = id+"  " + idDisciplina + "      " + idCronograma + "  " + idCronograma + " " + idEvento +"   "+ dia + " "+ mes + "  "+ ano + "\n";                    
                 }
             }                        
         } catch (Exception e) {                
-            System.out.println("Erro ao realizar a listagem de alunos! descrição do erro:"+ e.getMessage());                                     
+            System.out.println("Erro ao realizar a listagem de calendario! descrição do erro:"+ e.getMessage());                                     
         }         
         return retorno;
     }  
     
-    public String[] listarAlunoPorMatricula(int matricula, String ordem){                   
+    public String[] listarCalendarioPorId(int id, String ordem){                   
         String campoOrdena = null;
         if (ordem.equals("")){            
-            campoOrdena = "matricula";
+            campoOrdena = "id";
         }else {
             campoOrdena = ordem;        
         }        
-        if (matricula != 0) {
-            sql = "SELECT * FROM alunos where matricula =" + matricula+" order by " + campoOrdena ;
+        if (id != 0) {
+            sql = "SELECT * FROM calendario where id_calendario =" + id+" order by " + campoOrdena ;
         } else {
-            sql = "SELECT * FROM alunos order by " + campoOrdena ;
-        }
-        //sql = "SELECT * FROM alunos where matricula =" + matricula+" order by" + campoOrdena ;
+            sql = "SELECT * FROM calendario order by " + campoOrdena ;
+        }       
         String[] retorno = new String[30];                
         int cont=-1;
         try {            
@@ -127,10 +136,14 @@ public class DAOCalendario {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                                 
-                    int id = rs.getInt("matricula");
-                    String nome = rs.getString("nome");
-                    String telefone = rs.getString("telefone");                    
-                    retorno[cont] = id+"       " + nome.trim() + "                      " + telefone + "\n";                    
+                    int idCal = rs.getInt("id");                    
+                    int idDisciplina = rs.getInt("id_disciplina");
+                    int idCronograma = rs.getInt("id_cronograma");
+                    int idEvento = rs.getInt("id_evento");
+                    int dia      = rs.getInt("dia");
+                    int mes     = rs.getInt("mes");
+                    int ano     = rs.getInt("ano");                    
+                    retorno[cont] = idCal+"  " + idDisciplina + "      " + idCronograma + "  " + idCronograma + " " + idEvento +"   "+ dia + " "+ mes + "  "+ ano + "\n";                    
                 }
             }                        
         } catch (Exception e) {            
@@ -139,17 +152,17 @@ public class DAOCalendario {
         return retorno;
     }
             
-    public String[] listarAlunoPorNome(String nome, String ordem){   
+    public String[] listarCalendarioPorEvento(Eventos eventos, String ordem){   
         String campoOrdena = null;
         if (ordem.equals("")){            
-            campoOrdena = "matricula";
+            campoOrdena = "id";
         }else {
             campoOrdena = ordem;        
         }        
-        if (nome.equals("")) {
-            sql = "SELECT * FROM alunos where nome like'%" +nome+"%' order by " + campoOrdena ;
+        if (eventos.getDescricao().equals("")) {
+            sql = "SELECT * FROM calendario where id_evento =%" +eventos.getId()+"% order by " + campoOrdena ;
         } else {
-            sql = "SELECT * FROM alunos order by " + campoOrdena ;
+            sql = "SELECT * FROM calendario order by " + campoOrdena ;
         }
         //sql = "SELECT * FROM produtos where nome like '%"+nome+ "%'";        
         String[] retorno = new String[30];                
@@ -160,10 +173,14 @@ public class DAOCalendario {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                        
-                    int matricula = rs.getInt("matricula");
-                    String nomeAluno = rs.getString("nome");
-                    String telefone = rs.getString("telefone");                    
-                    retorno[cont] = matricula+"       " + nomeAluno.trim() + "                      " + telefone + "\n";                    
+                    int id = rs.getInt("id");                    
+                    int idDisciplina = rs.getInt("id_disciplina");
+                    int idCronograma = rs.getInt("id_cronograma");
+                    int idEvento = rs.getInt("id_evento");
+                    int dia      = rs.getInt("dia");
+                    int mes     = rs.getInt("mes");
+                    int ano     = rs.getInt("ano");                    
+                    retorno[cont] = id+"  " + idDisciplina + "      " + idCronograma  + " " + idEvento +"   "+ dia + " "+ mes + "  "+ ano + "\n";                    
                 }
             }                        
         } catch (Exception e) {                 
@@ -172,22 +189,43 @@ public class DAOCalendario {
         return retorno;
     }
     
-    public boolean existeAlunoPorMatricula(Alunos alunos){
-        sql = "SELECT matricula, nome FROM alunos WHERE matricula ="+ alunos.getMatricula();
-        int matricula=0;
-        String nome = null;
+    public boolean existeCalendarioPorId(Calendario calendario){
+        sql = "SELECT id, status FROM calendario WHERE id ="+ calendario.getId();
+        int id=0;
+        
+        int idCal = 0;
+        int idDisciplina = 0; 
+        int idCronograma  = 0;
+        int idEvento  = 0;
+        int dia = 0;
+        int mes = 0;    
+        int ano = 0;    
+        int status = 0;
+        
         try {            
             if (conn.conectar()) {                
                 stmt = conn.getConn().createStatement();
                 rs = stmt.executeQuery(sql);
                 
                 while (rs.next()) {
-                    matricula = rs.getInt("matricula");
-                    nome = rs.getString("nome");
+                    idCal = rs.getInt("id");                    
+                    idDisciplina = rs.getInt("id_disciplina");
+                    idCronograma = rs.getInt("id_cronograma");
+                    idEvento = rs.getInt("id_evento");
+                    dia      = rs.getInt("dia");
+                    mes     = rs.getInt("mes");
+                    ano     = rs.getInt("ano");
+                    status = rs.getInt("status");
                 }        
-                alunos.setMatricula(matricula);
-                alunos.setNome(nome);
-                if (alunos.getMatricula()!= 0 ) {
+                calendario.setId(idCal);
+                calendario.getDisciplina().setId(idDisciplina);
+                calendario.getCronograma().setId(idCronograma);
+                calendario.getEvento().setId(idEvento);
+                calendario.setDia(dia);
+                calendario.setMes(mes);
+                calendario.setAno(ano);
+                calendario.setStatus(status);
+                if (calendario.getId()!= 0 ) {
                     return true;
                 }                
             }                                    
@@ -195,64 +233,49 @@ public class DAOCalendario {
             System.out.println("Nenhum registro localizado com os dados informados. "+e.getMessage());                                                        
         }         
         return false;
-    }
+    }                                    
     
-    public boolean existeAlunoPorNome(Alunos alunos){
-        String nome = null;
-        int matricula = 0;
-        sql = "SELECT matricula, nome FROM alunos WHERE nome like '%"+alunos.getNome()+"%'";
+    public List<Calendario> recuperaCalendarioPorId(int id){                
+        sql = "SELECT id_calendario, id_disciplina, id_cronograma, id_evento, dia , mes, ano, status WHERE id="+id;
+        List listCalendario = new ArrayList<Calendario>();
+        Calendario calendario = new Calendario();        
+        int idCal = 0;
+        int idDisc = 0;
+        int idCrono = 0;
+        int idEven = 0;
+        int dia = 0;
+        int mes = 0;
+        int ano = 0;
+        int status = 0;        
         try {            
             if (conn.conectar()) {                
                 stmt = conn.getConn().createStatement();
                 rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-                    matricula = rs.getInt("matricula");
-                    nome = rs.getString("nome");
-                }                
-                alunos.setMatricula(matricula);
-                alunos.setNome(nome);
-                if (!alunos.getNome().equals("")) {
-                    return true;
-                }                               
-            }                        
-        } catch (Exception e) {
-            System.out.println("Consulta não retornou resultado com os dados informados." + e.getMessage());                                
-        }        
-        return false;
-    }                            
-    
-    public List<Alunos> recuperaAlunosPorMatricula(int matricula){                
-        sql = "SELECT matricula, nome, endereco, telefone, data_ingresso FROM alunos WHERE matricula="+matricula;
-        List aluno = new ArrayList<Alunos>();
-        Alunos alun = new Alunos();
-        String nome = null;
-        int mat = 0;
-        String endereco = null;
-        String telefone = null;
-        Date data_ingresso = null;
-        try {            
-            if (conn.conectar()) {                
-                stmt = conn.getConn().createStatement();
-                rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    mat             = rs.getInt("matricula");
-                    nome            = rs.getString("nome");
-                    endereco        = rs.getString("endereco");
-                    telefone        = rs.getString("telefone");
-                    data_ingresso   = rs.getDate("data_ingresso");
+                    idCal             = rs.getInt("id");
+                    idDisc            = rs.getInt("id_disciplina");
+                    idCrono           = rs.getInt("id_cronograma");
+                    idEven            = rs.getInt("id_evento");
+                    dia               = rs.getInt("dia");
+                    mes               = rs.getInt("mes");
+                    ano               = rs.getInt("ano");
+                    status            = rs.getInt("status");
                 }      
-                if (mat != 0) {
-                    alun.setMatricula(mat);
-                    alun.setNome(nome);
-                    alun.setEndereco(endereco);
-                    alun.setTelefone(telefone);
-                    alun.setDataIngresso(data_ingresso);
-                    aluno.add(alun);                    
+                if (id != 0) {
+                    calendario.setId(idCal);
+                    calendario.getDisciplina().setId(idDisc);
+                    calendario.getCronograma().setId(idCrono);
+                    calendario.getEvento().setId(idEven);
+                    calendario.setDia(dia);
+                    calendario.setMes(mes);
+                    calendario.setAno(mes);
+                    calendario.setStatus(status);
+                    listCalendario.add(calendario);                    
                 }                                                                
             }                        
         } catch (Exception e) {
             System.out.println("Consulta não retornou resultado com os dados informados." + e.getMessage());                                
         }        
-        return aluno;
+        return listCalendario;
     }
 }

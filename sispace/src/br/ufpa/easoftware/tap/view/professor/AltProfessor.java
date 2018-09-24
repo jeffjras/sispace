@@ -5,8 +5,8 @@
  */
 package br.ufpa.easoftware.tap.view.professor;
 
-import br.ufpa.easoftware.tap.dao.DAOProfessor;
-import br.ufpa.easoftware.tap.model.Professor;
+import br.ufpa.easoftware.tap.dao.DAOProfessores;
+import br.ufpa.easoftware.tap.model.Professores;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,8 +33,8 @@ public class AltProfessor extends javax.swing.JFrame {
     }
     
     public void localizaProfessorPorId() {
-        DAOProfessor daoProfessor = new DAOProfessor();
-        List<Professor> dados = daoProfessor.recuperaProfessorPorId(id);
+        DAOProfessores daoProfessor = new DAOProfessores();
+        List<Professores> dados = daoProfessor.recuperaProfessorPorId(id);
         if (dados.size() == 0) {
             JOptionPane.showMessageDialog(null, "Registro não localizado!");
             return;
@@ -164,11 +164,11 @@ public class AltProfessor extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:        
-        Professor prof = new Professor();
+        Professores prof = new Professores();
         prof.setId(id);
         prof.setNome(jTFNome.getText());        
         prof.setStatus(1);        
-        DAOProfessor daoProfessor = new DAOProfessor();
+        DAOProfessores daoProfessor = new DAOProfessores();
         daoProfessor.atualizar(prof);
         JOptionPane.showMessageDialog(null, "Professor Alterado com Sucesso!");   
         this.dispose();

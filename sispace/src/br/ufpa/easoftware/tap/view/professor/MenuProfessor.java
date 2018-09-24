@@ -5,7 +5,7 @@
  */
 package br.ufpa.easoftware.tap.view.professor;
 
-import br.ufpa.easoftware.tap.dao.DAOProfessor;
+import br.ufpa.easoftware.tap.dao.DAOProfessores;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -22,7 +22,7 @@ public class MenuProfessor extends javax.swing.JFrame {
      */
     public MenuProfessor() {
         initComponents();
-        DAOProfessor daoProessor = new DAOProfessor();                
+        DAOProfessores daoProessor = new DAOProfessores();                
         DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(daoProessor.listar());
         jComboBox2.setModel(defaultComboBoxModel);        
         JOptionPane.showMessageDialog(null, "codigo: " + jComboBox2.getItemAt(jComboBox2.getSelectedIndex()).charAt(0));

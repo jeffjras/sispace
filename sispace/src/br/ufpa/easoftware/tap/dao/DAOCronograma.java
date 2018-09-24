@@ -5,12 +5,11 @@
  */
 package br.ufpa.easoftware.tap.dao;
 
-import br.ufpa.easoftware.tap.model.Alunos;
+import br.ufpa.easoftware.tap.model.Cronograma;
 import br.ufpa.easoftware.tap.utils.Conexao;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,19 +24,20 @@ public class DAOCronograma {
     Statement stmt;
     ResultSet rs;
     int linhasAfetadas=0;
-    List<Alunos> dados;
+    List<Cronograma> dados;
     
     public DAOCronograma() {
         conn = new Conexao();
     }
     
-    public void inserir(Alunos alunos) {  
+    public void inserir(Cronograma cronograma) {  
         SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-        String ingresso = DATE_FORMAT.format(alunos.getDataIngresso());        
+        String dataCronograma = DATE_FORMAT.format(cronograma.getData());                
         
-        sql = "INSERT INTO alunos(matricula, nome, endereco, telefone, data_ingresso) VALUES("+ alunos.getMatricula() +",'"
-              + alunos.getNome()+"','"+alunos.getEndereco()+"','"
-              + alunos.getTelefone()+"','"+ingresso+"')";        
+        sql = "INSERT INTO cronograma(data, descricao, ano_letivo, status) "
+                + "VALUES("+ dataCronograma +",'"
+                + cronograma.getDescricao()+"',"+cronograma.getAnoLetivo()+",'"
+                + cronograma.getStatus()+"')";        
         try {                         
             if (conn.conectar()) {                
                 stmt = conn.getConn().createStatement();                                 
@@ -51,12 +51,15 @@ public class DAOCronograma {
         }           
     }     
     
-    public void atualizar(Alunos alunos) {        
+    public void atualizar(Cronograma cronograma) {        
         SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-        String ingresso = DATE_FORMAT.format(alunos.getDataIngresso()); 
+        String dataCronograma = DATE_FORMAT.format(cronograma.getData()); 
         
-        sql = "UPDATE alunos SET nome ='"+alunos.getNome()+"',endereco='"+alunos.getEndereco()+
-                      "',telefone='"+alunos.getTelefone()+"', data_ingresso='"+ingresso+"' WHERE matricula="+alunos.getMatricula();                      
+        sql = "UPDATE cronograma SET data ='"+dataCronograma+"',"
+                + "descricao='"+cronograma.getDescricao()
+                + ",ano_letivo="+cronograma.getAnoLetivo()+ "',"
+                + " status="+cronograma.getStatus()
+                + " WHERE id_cronograma="+cronograma.getId();                      
         try {
             Conexao conn = new Conexao(); 
             if (conn.conectar()) {                
@@ -70,8 +73,8 @@ public class DAOCronograma {
         }        
     } 
     
-    public void delete(Alunos alunos) {        
-        sql = "DELETE FROM alunos WHERE matricula="+alunos.getMatricula();                      
+    public void delete(Cronograma cronograma) {        
+        sql = "DELETE FROM cronograma WHERE id="+cronograma.getId();                      
         try {
             Conexao conn = new Conexao(); 
             if (conn.conectar()) {                
@@ -85,7 +88,7 @@ public class DAOCronograma {
     } 
             
     public String[] listar(){
-        sql = "SELECT * FROM alunos";
+        sql = "SELECT * FROM cronograma";
         String[] retorno = new String[30];                
         int cont=-1;
         try {            
@@ -94,29 +97,31 @@ public class DAOCronograma {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                        
-                    int id = rs.getInt("matricula");
-                    String nome = rs.getString("nome");
-                    double telefone = rs.getDouble("telefone");                    
-                    retorno[cont] = id+"       " + nome.trim() + "                      " + telefone + "\n";                    
+                    int id = rs.getInt("id");
+                    Date dataCronograma = rs.getDate("data");
+                    String descricao = rs.getString("descricao");
+                    //int anoLetivo = rs.getInt("ano_letivo");
+                    //int status = rs.getInt("status");                    
+                    retorno[cont] = id+"       " + descricao.trim() + "                      " + dataCronograma + "\n";                    
                 }
             }                        
         } catch (Exception e) {                
-            System.out.println("Erro ao realizar a listagem de alunos! descrição do erro:"+ e.getMessage());                                     
+            System.out.println("Erro ao realizar a listagem! descrição do erro:"+ e.getMessage());                                     
         }         
         return retorno;
     }  
     
-    public String[] listarAlunoPorMatricula(int matricula, String ordem){                   
+    public String[] listarCronogramaPorId(int id, String ordem){                   
         String campoOrdena = null;
         if (ordem.equals("")){            
-            campoOrdena = "matricula";
+            campoOrdena = "id";
         }else {
             campoOrdena = ordem;        
         }        
-        if (matricula != 0) {
-            sql = "SELECT * FROM alunos where matricula =" + matricula+" order by " + campoOrdena ;
+        if (id != 0) {
+            sql = "SELECT * FROM cronograma where id =" + id +" order by " + campoOrdena ;
         } else {
-            sql = "SELECT * FROM alunos order by " + campoOrdena ;
+            sql = "SELECT * FROM cronograma order by " + campoOrdena ;
         }
         //sql = "SELECT * FROM alunos where matricula =" + matricula+" order by" + campoOrdena ;
         String[] retorno = new String[30];                
@@ -127,10 +132,10 @@ public class DAOCronograma {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                                 
-                    int id = rs.getInt("matricula");
-                    String nome = rs.getString("nome");
-                    String telefone = rs.getString("telefone");                    
-                    retorno[cont] = id+"       " + nome.trim() + "                      " + telefone + "\n";                    
+                    int idCrono = rs.getInt("id");
+                    Date dataCronograma = rs.getDate("data");
+                    String descricao = rs.getString("descricao");                    
+                    retorno[cont] = idCrono+"       " + dataCronograma + "                      " + descricao.trim() + "\n";                    
                 }
             }                        
         } catch (Exception e) {            
@@ -139,19 +144,18 @@ public class DAOCronograma {
         return retorno;
     }
             
-    public String[] listarAlunoPorNome(String nome, String ordem){   
+    public String[] listarCronogramaPorDescricao(String descricao, String ordem){   
         String campoOrdena = null;
         if (ordem.equals("")){            
-            campoOrdena = "matricula";
+            campoOrdena = "id";
         }else {
             campoOrdena = ordem;        
         }        
-        if (nome.equals("")) {
-            sql = "SELECT * FROM alunos where nome like'%" +nome+"%' order by " + campoOrdena ;
+        if (descricao.equals("")) {
+            sql = "SELECT * FROM cronograma where descricao like'%" +descricao+"%' order by " + campoOrdena ;
         } else {
-            sql = "SELECT * FROM alunos order by " + campoOrdena ;
-        }
-        //sql = "SELECT * FROM produtos where nome like '%"+nome+ "%'";        
+            sql = "SELECT * FROM cronograma order by " + campoOrdena ;
+        }       
         String[] retorno = new String[30];                
         int cont=-1;
         try {            
@@ -160,10 +164,10 @@ public class DAOCronograma {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                        
-                    int matricula = rs.getInt("matricula");
-                    String nomeAluno = rs.getString("nome");
-                    String telefone = rs.getString("telefone");                    
-                    retorno[cont] = matricula+"       " + nomeAluno.trim() + "                      " + telefone + "\n";                    
+                    int idCrono = rs.getInt("id");
+                    Date dataCronograma = rs.getDate("data");
+                    String desc = rs.getString("descricao");                    
+                    retorno[cont] = idCrono+"       " + desc.trim() + "                      " + dataCronograma + "\n";                    
                 }
             }                        
         } catch (Exception e) {                 
@@ -172,22 +176,22 @@ public class DAOCronograma {
         return retorno;
     }
     
-    public boolean existeAlunoPorMatricula(Alunos alunos){
-        sql = "SELECT matricula, nome FROM alunos WHERE matricula ="+ alunos.getMatricula();
-        int matricula=0;
-        String nome = null;
+    public boolean existeCronogramaPorId(Cronograma cronograma){
+        sql = "SELECT id, descricao FROM cronograma WHERE id ="+ cronograma.getId();
+        int idCrono=0;
+        String descricao = null;
         try {            
             if (conn.conectar()) {                
                 stmt = conn.getConn().createStatement();
                 rs = stmt.executeQuery(sql);
                 
                 while (rs.next()) {
-                    matricula = rs.getInt("matricula");
-                    nome = rs.getString("nome");
+                    idCrono = rs.getInt("id");
+                    descricao = rs.getString("descricao");
                 }        
-                alunos.setMatricula(matricula);
-                alunos.setNome(nome);
-                if (alunos.getMatricula()!= 0 ) {
+                cronograma.setId(idCrono);
+                cronograma.setDescricao(descricao);
+                if (cronograma.getId()!= 0 ) {
                     return true;
                 }                
             }                                    
@@ -197,21 +201,21 @@ public class DAOCronograma {
         return false;
     }
     
-    public boolean existeAlunoPorNome(Alunos alunos){
-        String nome = null;
-        int matricula = 0;
-        sql = "SELECT matricula, nome FROM alunos WHERE nome like '%"+alunos.getNome()+"%'";
+    public boolean existeCronogramaPorDescricao(Cronograma cronograma){
+        String descricao = null;
+        int idCrono = 0;
+        sql = "SELECT id, descricao FROM cronograma WHERE descricao like '%"+cronograma.getDescricao()+"%'";
         try {            
             if (conn.conectar()) {                
                 stmt = conn.getConn().createStatement();
                 rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-                    matricula = rs.getInt("matricula");
-                    nome = rs.getString("nome");
+                    idCrono = rs.getInt("id");
+                    descricao = rs.getString("descricao");
                 }                
-                alunos.setMatricula(matricula);
-                alunos.setNome(nome);
-                if (!alunos.getNome().equals("")) {
+                cronograma.setId(idCrono);
+                cronograma.setDescricao(descricao);
+                if (!cronograma.getDescricao().equals("")) {
                     return true;
                 }                               
             }                        
@@ -221,38 +225,37 @@ public class DAOCronograma {
         return false;
     }                            
     
-    public List<Alunos> recuperaAlunosPorMatricula(int matricula){                
-        sql = "SELECT matricula, nome, endereco, telefone, data_ingresso FROM alunos WHERE matricula="+matricula;
-        List aluno = new ArrayList<Alunos>();
-        Alunos alun = new Alunos();
-        String nome = null;
-        int mat = 0;
-        String endereco = null;
-        String telefone = null;
-        Date data_ingresso = null;
+    public List<Cronograma> recuperaCronogramaPorId(int id){                
+        sql = "SELECT id, data, descricao, ano_letivo, status FROM cronograma WHERE id="+id;
+        List cronogramas = new ArrayList<Cronograma>();
+        Cronograma cronograma = new Cronograma();
+        String desc = null;
+        int idCrono = 0;
+        Date data  = null;
+        int  anoLetivo = 0;
+        int status = 0;
         try {            
             if (conn.conectar()) {                
                 stmt = conn.getConn().createStatement();
                 rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-                    mat             = rs.getInt("matricula");
-                    nome            = rs.getString("nome");
-                    endereco        = rs.getString("endereco");
-                    telefone        = rs.getString("telefone");
-                    data_ingresso   = rs.getDate("data_ingresso");
+                    idCrono         = rs.getInt("id");
+                    data            = rs.getDate("data");
+                    desc            = rs.getString("descricao");
+                    anoLetivo       = rs.getInt("ano_letivo");
+                    status          = rs.getInt("status");                    
                 }      
-                if (mat != 0) {
-                    alun.setMatricula(mat);
-                    alun.setNome(nome);
-                    alun.setEndereco(endereco);
-                    alun.setTelefone(telefone);
-                    alun.setDataIngresso(data_ingresso);
-                    aluno.add(alun);                    
+                if (idCrono != 0) {
+                    cronograma.setId(idCrono);
+                    cronograma.setDescricao(desc);
+                    cronograma.setAnoLetivo(anoLetivo);
+                    cronograma.setStatus(status);                    
+                    cronogramas.add(cronograma);                    
                 }                                                                
             }                        
         } catch (Exception e) {
             System.out.println("Consulta não retornou resultado com os dados informados." + e.getMessage());                                
         }        
-        return aluno;
+        return cronogramas;
     }
 }

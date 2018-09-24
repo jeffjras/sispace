@@ -3,17 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/view/professor/AltProfessor.java</file>
-            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/model/Disciplina.java</file>
-            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/view/professor/ListProfessor.java</file>
-            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/view/aluno/CadAluno.java</file>
-            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/view/professor/MenuProfessor.java</file>
-            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/view/professor/ExcProfessor.java</file>
-            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/dao/DAODisciplina.java</file>
-            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/dao/DAOProfessor.java</file>
-            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/view/professor/CadProfessor.java</file>
-            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/utils/Conexao.java</file>
-            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/dao/DAOAlunos.java</file>
+            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/view/evento/ListEventos.java</file>
+            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/dao/DAOTipoEventos.java</file>
+            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/view/evento/ExcEventos.java</file>
+            <file>file:/C:/Users/jefferson-lenovo/Documents/NetBeansProjects/sispace/src/br/ufpa/easoftware/tap/view/evento/CadEventos.java</file>
         </group>
     </open-files>
 </project-private>
