@@ -35,7 +35,7 @@ public class DAOCronograma {
         String dataCronograma = DATE_FORMAT.format(cronograma.getData());                
         
         sql = "INSERT INTO cronograma(data, descricao, ano_letivo, status) "
-                + "VALUES("+ dataCronograma +",'"
+                + "VALUES('"+ dataCronograma +"','"
                 + cronograma.getDescricao()+"',"+cronograma.getAnoLetivo()+",'"
                 + cronograma.getStatus()+"')";        
         try {                         
@@ -74,7 +74,7 @@ public class DAOCronograma {
     } 
     
     public void delete(Cronograma cronograma) {        
-        sql = "DELETE FROM cronograma WHERE id="+cronograma.getId();                      
+        sql = "DELETE FROM cronograma WHERE id_cronograma="+cronograma.getId();                      
         try {
             Conexao conn = new Conexao(); 
             if (conn.conectar()) {                
@@ -97,12 +97,9 @@ public class DAOCronograma {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                        
-                    int id = rs.getInt("id");
-                    Date dataCronograma = rs.getDate("data");
-                    String descricao = rs.getString("descricao");
-                    //int anoLetivo = rs.getInt("ano_letivo");
-                    //int status = rs.getInt("status");                    
-                    retorno[cont] = id+"       " + descricao.trim() + "                      " + dataCronograma + "\n";                    
+                    int id = rs.getInt("id_cronograma");                    
+                    String descricao = rs.getString("descricao");                  
+                    retorno[cont] = id+"       " + descricao.trim() + "\n";                    
                 }
             }                        
         } catch (Exception e) {                
@@ -114,12 +111,12 @@ public class DAOCronograma {
     public String[] listarCronogramaPorId(int id, String ordem){                   
         String campoOrdena = null;
         if (ordem.equals("")){            
-            campoOrdena = "id";
+            campoOrdena = "id_cronograma";
         }else {
             campoOrdena = ordem;        
         }        
         if (id != 0) {
-            sql = "SELECT * FROM cronograma where id =" + id +" order by " + campoOrdena ;
+            sql = "SELECT * FROM cronograma where id_cronograma =" + id +" order by " + campoOrdena ;
         } else {
             sql = "SELECT * FROM cronograma order by " + campoOrdena ;
         }
@@ -132,7 +129,7 @@ public class DAOCronograma {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                                 
-                    int idCrono = rs.getInt("id");
+                    int idCrono = rs.getInt("id_cronograma");
                     Date dataCronograma = rs.getDate("data");
                     String descricao = rs.getString("descricao");                    
                     retorno[cont] = idCrono+"       " + dataCronograma + "                      " + descricao.trim() + "\n";                    
@@ -147,7 +144,7 @@ public class DAOCronograma {
     public String[] listarCronogramaPorDescricao(String descricao, String ordem){   
         String campoOrdena = null;
         if (ordem.equals("")){            
-            campoOrdena = "id";
+            campoOrdena = "id_cronograma";
         }else {
             campoOrdena = ordem;        
         }        
@@ -164,7 +161,7 @@ public class DAOCronograma {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                        
-                    int idCrono = rs.getInt("id");
+                    int idCrono = rs.getInt("id_cronograma");
                     Date dataCronograma = rs.getDate("data");
                     String desc = rs.getString("descricao");                    
                     retorno[cont] = idCrono+"       " + desc.trim() + "                      " + dataCronograma + "\n";                    
@@ -177,7 +174,7 @@ public class DAOCronograma {
     }
     
     public boolean existeCronogramaPorId(Cronograma cronograma){
-        sql = "SELECT id, descricao FROM cronograma WHERE id ="+ cronograma.getId();
+        sql = "SELECT id_cronograma, descricao FROM cronograma WHERE id_cronograma ="+ cronograma.getId();
         int idCrono=0;
         String descricao = null;
         try {            
@@ -186,7 +183,7 @@ public class DAOCronograma {
                 rs = stmt.executeQuery(sql);
                 
                 while (rs.next()) {
-                    idCrono = rs.getInt("id");
+                    idCrono = rs.getInt("id_cronograma");
                     descricao = rs.getString("descricao");
                 }        
                 cronograma.setId(idCrono);
@@ -204,13 +201,13 @@ public class DAOCronograma {
     public boolean existeCronogramaPorDescricao(Cronograma cronograma){
         String descricao = null;
         int idCrono = 0;
-        sql = "SELECT id, descricao FROM cronograma WHERE descricao like '%"+cronograma.getDescricao()+"%'";
+        sql = "SELECT id_cronograma, descricao FROM cronograma WHERE descricao like '%"+cronograma.getDescricao()+"%'";
         try {            
             if (conn.conectar()) {                
                 stmt = conn.getConn().createStatement();
                 rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-                    idCrono = rs.getInt("id");
+                    idCrono = rs.getInt("id_cronograma");
                     descricao = rs.getString("descricao");
                 }                
                 cronograma.setId(idCrono);
@@ -226,7 +223,7 @@ public class DAOCronograma {
     }                            
     
     public List<Cronograma> recuperaCronogramaPorId(int id){                
-        sql = "SELECT id, data, descricao, ano_letivo, status FROM cronograma WHERE id="+id;
+        sql = "SELECT id_cronograma, data, descricao, ano_letivo, status FROM cronograma WHERE id_cronograma="+id;
         List cronogramas = new ArrayList<Cronograma>();
         Cronograma cronograma = new Cronograma();
         String desc = null;
@@ -239,7 +236,7 @@ public class DAOCronograma {
                 stmt = conn.getConn().createStatement();
                 rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-                    idCrono         = rs.getInt("id");
+                    idCrono         = rs.getInt("id_cronograma");
                     data            = rs.getDate("data");
                     desc            = rs.getString("descricao");
                     anoLetivo       = rs.getInt("ano_letivo");
@@ -248,6 +245,7 @@ public class DAOCronograma {
                 if (idCrono != 0) {
                     cronograma.setId(idCrono);
                     cronograma.setDescricao(desc);
+                    cronograma.setData(data);
                     cronograma.setAnoLetivo(anoLetivo);
                     cronograma.setStatus(status);                    
                     cronogramas.add(cronograma);                    

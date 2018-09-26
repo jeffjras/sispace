@@ -6,8 +6,6 @@
 package br.ufpa.easoftware.tap.view.aluno;
 
 import br.ufpa.easoftware.tap.dao.DAOAlunos;
-import br.ufpa.easoftware.tap.model.Alunos;
-import java.util.List;
 
 /**
  *

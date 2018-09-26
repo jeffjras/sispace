@@ -6,6 +6,7 @@
 package br.ufpa.easoftware.tap.dao;
 
 import br.ufpa.easoftware.tap.model.Disciplinas;
+import br.ufpa.easoftware.tap.model.Professores;
 import br.ufpa.easoftware.tap.utils.Conexao;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -29,13 +30,15 @@ public class DAODisciplinas {
     }
     
     public void inserir(Disciplinas disciplina) {                   
-        sql = "INSERT INTO disciplinas(id_professor,\n" +
-                                       "nome,\n" +
-                                       "carga_horaria,ementa,\n" +
-                                       "creditos,\n" +
-                                        "status) \n"
+        sql = "INSERT INTO disciplinas(id_professor," +
+                                       "nome," +
+                                       "carga_horaria," + 
+                                       "ementa," +
+                                       "creditos," +
+                                        "status)"
                       + "VALUES("+ disciplina.getProfessor().getId() +",'"
-                                 + disciplina.getNome()+"',"+disciplina.getCargaHoraria()+","
+                                 + disciplina.getNome()+"',"+disciplina.getCargaHoraria()+",'"
+                                 + disciplina.getEmenta()+"',"
                                  + disciplina.getCreditos()+","+disciplina.getStatus()+")";        
         try {                         
             if (conn.conectar()) {                
@@ -51,8 +54,8 @@ public class DAODisciplinas {
     }     
     
     public void atualizar(Disciplinas disciplina) {        
-        sql = "UPDATE disciplinas SET id_professor ='"+disciplina.getProfessor().getId()+"',nome='"+disciplina.getNome()+
-                      ",carga_horaria="+disciplina.getCargaHoraria()+"', ementa="+disciplina.getEmenta()+", creditos="+disciplina.getCreditos()+" status="+disciplina.getStatus()+" WHERE id_disciplina="+disciplina.getId();                      
+        sql = "UPDATE disciplinas SET id_professor ="+disciplina.getProfessor().getId()+",nome='"+disciplina.getNome()+
+                      "',carga_horaria="+disciplina.getCargaHoraria()+", ementa='"+disciplina.getEmenta()+"', creditos="+disciplina.getCreditos()+", status="+disciplina.getStatus()+" WHERE id_disciplina="+disciplina.getId();                      
         try {
             Conexao conn = new Conexao(); 
             if (conn.conectar()) {                
@@ -91,9 +94,8 @@ public class DAODisciplinas {
                 while (rs.next()) {
                     cont = cont + 1;                                                                        
                     int id = rs.getInt("id_disciplina");
-                    String nome = rs.getString("nome");
-                    int cargaHoraria = rs.getInt("carga_horaria");                    
-                    retorno[cont] = id + "       " + nome.trim() + "                      " + cargaHoraria + "\n";                    
+                    String nome = rs.getString("nome");                                      
+                    retorno[cont] = id + "       " + nome.trim() +"\n";                    
                 }
             }                        
         } catch (Exception e) {                
@@ -231,8 +233,8 @@ public class DAODisciplinas {
                 stmt = conn.getConn().createStatement();
                 rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-                    id              = rs.getInt("id_disciplina");
-                    idProfessor     = rs.getInt("id_professor");
+                    id              = rs.getInt("id_disciplina");                    
+                    idProfessor     = rs.getInt("id_professor");                    
                     nome            = rs.getString("nome");
                     cargaHoraria    = rs.getInt("carga_horaria");
                     ementa          = rs.getString("ementa");
@@ -240,8 +242,10 @@ public class DAODisciplinas {
                     status          = rs.getInt("status");                    
                 }      
                 if (id != 0) {
+                    Professores professores = new Professores();
+                    professores.setId(idProfessor);
                     disciplina.setId(id);
-                    disciplina.getProfessor().setId(idProfessor);
+                    disciplina.setProfessor(professores);
                     disciplina.setNome(nome);
                     disciplina.setCargaHoraria(cargaHoraria);
                     disciplina.setEmenta(ementa);

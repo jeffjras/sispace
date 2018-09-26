@@ -156,7 +156,7 @@ public class DAOTipoEventos {
     }
     
     public boolean existeTipoEventosPorId(TipoEventos tipoEventos){
-        sql = "SELECT id_tipo_eventos, descricao FROM tipo_eventoses WHERE id_tipo_eventos ="+ tipoEventos.getId();
+        sql = "SELECT id_tipo_eventos, descricao FROM tipo_eventos WHERE id_tipo_eventos ="+ tipoEventos.getId();
         int id = 0;
         String descricao = null;
         try {            

@@ -5,7 +5,7 @@
  */
 package br.ufpa.easoftware.tap.view.evento;
 
-import br.ufpa.easoftware.tap.dao.DAOProfessores;
+import br.ufpa.easoftware.tap.dao.DAOEventos;
 
 /**
  *
@@ -21,14 +21,14 @@ public class ListEventos extends javax.swing.JFrame {
     }
     public ListEventos(int tipo) {
         initComponents();
-        DAOProfessores daoProfessor = new DAOProfessores();   
-        String[] dadosProfessor = null;    
+        DAOEventos daoEventos = new DAOEventos();   
+        String[] dadosEventos = null;    
         if (tipo == 1) {
-             dadosProfessor = daoProfessor.listarProfessorPorId(0, "id_professor");
+             dadosEventos = daoEventos.listarEventoPorId(0, "id_eventos");
         } else if (tipo == 2) {
-            dadosProfessor = daoProfessor.listarProfessorPorId(0, "nome");        
+            dadosEventos = daoEventos.listarEventoPorId(0, "descricao");        
         }        
-        jList1.setListData(dadosProfessor);
+        jList1.setListData(dadosEventos);
     }
 
     /**
@@ -51,13 +51,13 @@ public class ListEventos extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jList1);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setText("PROFESSORES  CADASTRADOS");
+        jLabel1.setText("EVENTOS  CADASTRADOS");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("COD.");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel3.setText("NOME");
+        jLabel3.setText("DESCRIÇÃO");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,7 +65,7 @@ public class ListEventos extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(43, 43, 43)
@@ -73,9 +73,9 @@ public class ListEventos extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 111, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(99, 99, 99))
+                .addGap(120, 120, 120))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

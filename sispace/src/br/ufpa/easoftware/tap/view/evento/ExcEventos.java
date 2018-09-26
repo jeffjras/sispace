@@ -5,8 +5,9 @@
  */
 package br.ufpa.easoftware.tap.view.evento;
 
-import br.ufpa.easoftware.tap.view.professor.*;
+import br.ufpa.easoftware.tap.dao.DAOEventos;
 import br.ufpa.easoftware.tap.dao.DAOProfessores;
+import br.ufpa.easoftware.tap.model.Eventos;
 import br.ufpa.easoftware.tap.model.Professores;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +19,9 @@ import javax.swing.JOptionPane;
  */
 public class ExcEventos extends javax.swing.JFrame {
 
-    Professores prof;
-    DAOProfessores daoProessor;
-    String[] dadosProf = new String[3];
+    Eventos eventos;
+    DAOEventos daoEventos;
+    String[] dadosEven = new String[3];
     List lista = new ArrayList();
     
     /**
@@ -28,7 +29,7 @@ public class ExcEventos extends javax.swing.JFrame {
      */    
     public ExcEventos() {
         initComponents();
-        prof = new Professores();
+        eventos = new Eventos();
     }
 
     /**
@@ -41,9 +42,9 @@ public class ExcEventos extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTFMatricula = new javax.swing.JTextField();
+        txtCodigo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTFNome = new javax.swing.JTextField();
+        txtDescricao = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jButton1 = new javax.swing.JButton();
@@ -53,9 +54,9 @@ public class ExcEventos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Matrícula:");
+        jLabel1.setText("Cód.:");
 
-        jLabel2.setText("Nome");
+        jLabel2.setText("Descrição:");
 
         jScrollPane1.setViewportView(jList1);
 
@@ -75,9 +76,9 @@ public class ExcEventos extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setText("EXCLUIR ALUNO");
+        jLabel3.setText("EXCLUIR EVENTO");
 
-        jLabel4.setText("Informe a matrícula ou nome para LOCALIZAR e depois EXCLUIR:");
+        jLabel4.setText("Informe um código ou descr. para LOCALIZAR e depois EXCLUIR:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -97,11 +98,11 @@ public class ExcEventos extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTFMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTFNome, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton2)))
                         .addContainerGap())))
@@ -121,8 +122,8 @@ public class ExcEventos extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTFMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTFNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -136,23 +137,22 @@ public class ExcEventos extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:                                                   
-        daoProessor = new DAOProfessores();
+        daoEventos = new DAOEventos();
         //prod.setId(Integer.parseInt(jTextField1.getText()));
-        if (!jTFMatricula.getText().equals("")) {
-            prof.setId(Integer.parseInt(jTFMatricula.getText()));            
-            if (daoProessor.existeProfessorPorId(prof)) {
-                dadosProf = daoProessor.listarProfessorPorId(prof.getId(), "id");
-                jList1.setListData(dadosProf);
+        if (!txtCodigo.getText().equals("")) {
+            eventos.setId(Integer.parseInt(txtCodigo.getText()));            
+            if (daoEventos.existeEventoPorId(eventos)) {
+                dadosEven = daoEventos.listarEventoPorId(eventos.getId(), "id_eventos");
+                jList1.setListData(dadosEven);
             }            
         }        
-        if (!jTFNome.getText().equals("")) {                        
-            prof.setNome(jTFNome.getText());
-            if (daoProessor.existeProfessorPorNome(prof)) {                                
-                //String[] dadosProd = (String[]) lista.toArray(new String[0]);
-                String[] dadosProf = daoProessor.listarProfessorPorNome(prof.getNome(), "nome");
-                jList1.setListData(dadosProf);
+        if (!txtDescricao.getText().equals("")) {                        
+            eventos.setDescricao(txtDescricao.getText());
+            if (daoEventos.existeEventoPorDescricao(eventos)) {                                                
+                String[] dadosProf = daoEventos.listarEventoPorDescricao(eventos.getDescricao(), "descricao");
+                jList1.setListData(dadosEven);
             }else {
-                JOptionPane.showMessageDialog(null, "Não existe professor informado.");
+                JOptionPane.showMessageDialog(null, "Não existe evento informado.");
                 jList1.setListData(new String[0]);
                 return;  
             }
@@ -162,11 +162,11 @@ public class ExcEventos extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:                                
         try {            
-            daoProessor.delete(prof);
-            JOptionPane.showMessageDialog(null, "Professor excluído com sucesso!");
+            daoEventos.delete(eventos);
+            JOptionPane.showMessageDialog(null, "Evento excluído com sucesso!");
             dispose();            
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Não existe professor informado a ser excluído.");            
+            JOptionPane.showMessageDialog(null, "Não existe evento informado a ser excluído.");            
         }           
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -277,7 +277,7 @@ public class ExcEventos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTFMatricula;
-    private javax.swing.JTextField jTFNome;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtDescricao;
     // End of variables declaration//GEN-END:variables
 }

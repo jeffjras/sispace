@@ -6,14 +6,10 @@
 package br.ufpa.easoftware.tap.dao;
 
 import br.ufpa.easoftware.tap.model.Calendario;
-import br.ufpa.easoftware.tap.model.Calendario;
 import br.ufpa.easoftware.tap.model.Eventos;
 import br.ufpa.easoftware.tap.utils.Conexao;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -152,15 +148,15 @@ public class DAOCalendario {
         return retorno;
     }
             
-    public String[] listarCalendarioPorEvento(Eventos eventos, String ordem){   
+    public String[] listarCalendarioPorEvento(int idEve, String ordem){   
         String campoOrdena = null;
         if (ordem.equals("")){            
             campoOrdena = "id";
         }else {
             campoOrdena = ordem;        
         }        
-        if (eventos.getDescricao().equals("")) {
-            sql = "SELECT * FROM calendario where id_evento =%" +eventos.getId()+"% order by " + campoOrdena ;
+        if (idEve != 0) {
+            sql = "SELECT * FROM calendario where id_evento =%" +idEve+"% order by " + campoOrdena ;
         } else {
             sql = "SELECT * FROM calendario order by " + campoOrdena ;
         }
@@ -233,7 +229,7 @@ public class DAOCalendario {
             System.out.println("Nenhum registro localizado com os dados informados. "+e.getMessage());                                                        
         }         
         return false;
-    }                                    
+    }           
     
     public List<Calendario> recuperaCalendarioPorId(int id){                
         sql = "SELECT id_calendario, id_disciplina, id_cronograma, id_evento, dia , mes, ano, status WHERE id="+id;

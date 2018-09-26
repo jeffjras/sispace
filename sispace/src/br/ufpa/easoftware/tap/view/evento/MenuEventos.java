@@ -5,10 +5,6 @@
  */
 package br.ufpa.easoftware.tap.view.evento;
 
-import br.ufpa.easoftware.tap.dao.DAOProfessores;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
-
 /**
  *
  * @author UEPA_LAB6
@@ -19,11 +15,7 @@ public class MenuEventos extends javax.swing.JFrame {
      * Creates new form MenuProdutos
      */
     public MenuEventos() {
-        initComponents();
-        DAOProfessores daoProessor = new DAOProfessores();                
-        DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(daoProessor.listar());
-        jComboBox2.setModel(defaultComboBoxModel);        
-        JOptionPane.showMessageDialog(null, "codigo: " + jComboBox2.getItemAt(jComboBox2.getSelectedIndex()).charAt(0));
+        initComponents();        
     }
 
     /**
@@ -43,7 +35,6 @@ public class MenuEventos extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,13 +63,6 @@ public class MenuEventos extends javax.swing.JFrame {
 
         jLabel7.setText("5) Lista professor em ordem alfabética");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -93,14 +77,13 @@ public class MenuEventos extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addComponent(jLabel2)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel7)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel7)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(136, 136, 136)
+                        .addGap(137, 137, 137)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,13 +100,11 @@ public class MenuEventos extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
-                .addGap(18, 18, 18)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(70, 70, 70))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jLabel4.getAccessibleContext().setAccessibleName("4) Lista professores em ordem de Código");
@@ -143,36 +124,36 @@ public class MenuEventos extends javax.swing.JFrame {
         switch (opcao) {
             case "1": 
             {
-                CadEventos cadProfessor = new CadEventos();
-                cadProfessor.setVisible(true);
+                CadEventos cadEventos = new CadEventos();
+                cadEventos.setVisible(true);
                 jTextField1.setText("");
                 break;
             }
             case "2": 
             {
-                AltEventos altProfessor = new AltEventos();
-                altProfessor.setVisible(true);
+                AltEventos altEventos = new AltEventos();
+                altEventos.setVisible(true);
                 jTextField1.setText("");
                 break;
             }
             case "3": 
             {
-                ExcEventos excProfessor = new ExcEventos();
-                excProfessor.setVisible(true);
+                ExcEventos excEventos = new ExcEventos();
+                excEventos.setVisible(true);
                 jTextField1.setText("");
                 break;
             }
             case "4": 
             {
-                ListEventos listProfessor = new ListEventos(1);                
-                listProfessor.setVisible(true);                
+                ListEventos listEventos = new ListEventos(1);                
+                listEventos.setVisible(true);                
                 jTextField1.setText("");
                 break;
             }
             case "5": 
             {
-                ListEventos listProfessor = new ListEventos(2);                
-                listProfessor.setVisible(true);                
+                ListEventos listEventos = new ListEventos(2);                
+                listEventos.setVisible(true);                
                 jTextField1.setText("");
                 break;
             }
@@ -181,19 +162,10 @@ public class MenuEventos extends javax.swing.JFrame {
                 jTextField1.setText("");
                 this.dispose();
                 break;
-            }
-            /*default: {
-                //System.out.println("teste ramon!");
-                JOptionPane.showMessageDialog(null,"Opção Inválida!");
-                break;
-            }*/        
+            }                    
         }                        
         
     }//GEN-LAST:event_jTextField1KeyPressed
-
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:        
-    }//GEN-LAST:event_jComboBox2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -742,7 +714,6 @@ public class MenuEventos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

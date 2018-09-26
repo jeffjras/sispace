@@ -140,7 +140,7 @@ public class ExcTipoEventos extends javax.swing.JFrame {
         if (!jTFMatricula.getText().equals("")) {
             tipoEve.setId(Integer.parseInt(jTFMatricula.getText()));            
             if (daoTipoEventos.existeTipoEventosPorId(tipoEve)) {
-                dadosTipoEve = daoTipoEventos.listarTipoEventosPorId(tipoEve.getId(), "id");
+                dadosTipoEve = daoTipoEventos.listarTipoEventosPorId(tipoEve.getId(), "id_tipo_eventos");
                 jList1.setListData(dadosTipoEve);
             }            
         }        

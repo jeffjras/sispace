@@ -6,6 +6,7 @@
 package br.ufpa.easoftware.tap.dao;
 
 import br.ufpa.easoftware.tap.model.Eventos;
+import br.ufpa.easoftware.tap.model.TipoEventos;
 import br.ufpa.easoftware.tap.utils.Conexao;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -63,7 +64,7 @@ public class DAOEventos {
                 + "descricao='"+eventos.getDescricao()
                 + "',data='"+dataEvento+"',"
                 + " status='"+eventos.getStatus()+"' "
-                + "WHERE id="+eventos.getId();                      
+                + "WHERE id_eventos="+eventos.getId();                      
         try {
             Conexao conn = new Conexao(); 
             if (conn.conectar()) {                
@@ -78,7 +79,7 @@ public class DAOEventos {
     } 
     
     public void delete(Eventos eventos) {        
-        sql = "DELETE FROM eventos WHERE id="+eventos.getId();                      
+        sql = "DELETE FROM eventos WHERE id_eventos="+eventos.getId();                      
         try {
             Conexao conn = new Conexao(); 
             if (conn.conectar()) {                
@@ -101,10 +102,10 @@ public class DAOEventos {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                        
-                    int id = rs.getInt("id");
+                    int id = rs.getInt("id_eventos");
                     String descricao = rs.getString("descricao");
-                    Date data = rs.getDate("data");                    
-                    retorno[cont] = id+"       " + descricao.trim() + "                      " + data + "\n";                    
+                    //Date data = rs.getDate("data");                    
+                    retorno[cont] = id+"       " + descricao.trim() + "                      \n";                    
                 }
             }                        
         } catch (Exception e) {                
@@ -116,16 +117,15 @@ public class DAOEventos {
     public String[] listarEventoPorId(int id, String ordem){                   
         String campoOrdena = null;
         if (ordem.equals("")){            
-            campoOrdena = "id";
+            campoOrdena = "id_eventos";
         }else {
             campoOrdena = ordem;        
         }        
         if (id != 0) {
-            sql = "SELECT * FROM eventos where id =" + id+" order by " + campoOrdena ;
+            sql = "SELECT * FROM eventos where id_eventos =" + id+" order by " + campoOrdena ;
         } else {
             sql = "SELECT * FROM eventos order by " + campoOrdena ;
         }
-        //sql = "SELECT * FROM eventos where id =" + id+" order by" + campoOrdena ;
         String[] retorno = new String[30];                
         int cont=-1;
         try {            
@@ -134,10 +134,10 @@ public class DAOEventos {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                                 
-                    int idEve = rs.getInt("id");
+                    int idEve = rs.getInt("id_eventos");
                     String desc = rs.getString("descricao");
-                    Date data = rs.getDate("data");                    
-                    retorno[cont] = idEve+"       " + desc.trim() + "                      " + data + "\n";                    
+                    //Date data = rs.getDate("data");                    
+                    retorno[cont] = idEve+"       " + desc.trim() + "                      \n";                    
                 }
             }                        
         } catch (Exception e) {            
@@ -168,8 +168,8 @@ public class DAOEventos {
                     cont = cont + 1;                                                                        
                     int id = rs.getInt("id");
                     String desc = rs.getString("descricao");
-                    Date data = rs.getDate("data");                    
-                    retorno[cont] = id+"       " + desc.trim() + "                      " + data + "\n";                    
+                    //Date data = rs.getDate("data");                    
+                    retorno[cont] = id+"       " + desc.trim() + "                      \n";                    
                 }
             }                        
         } catch (Exception e) {                 
@@ -179,7 +179,7 @@ public class DAOEventos {
     }
     
     public boolean existeEventoPorId(Eventos eventos){
-        sql = "SELECT id, descricao FROM eventos WHERE id ="+ eventos.getId();
+        sql = "SELECT id_eventos, descricao FROM eventos WHERE id_eventos ="+ eventos.getId();
         int id=0;
         String descricao = null;
         try {            
@@ -188,7 +188,7 @@ public class DAOEventos {
                 rs = stmt.executeQuery(sql);
                 
                 while (rs.next()) {
-                    id = rs.getInt("id");
+                    id = rs.getInt("id_eventos");
                     descricao = rs.getString("descricao");
                 }        
                 eventos.setId(id);
@@ -206,13 +206,13 @@ public class DAOEventos {
     public boolean existeEventoPorDescricao(Eventos eventos){
         String desc = null;
         int id = 0;
-        sql = "SELECT id, descricao FROM eventos WHERE descricao like '%"+eventos.getDescricao()+"%'";
+        sql = "SELECT id_eventos, descricao FROM eventos WHERE descricao like '%"+eventos.getDescricao()+"%'";
         try {            
             if (conn.conectar()) {                
                 stmt = conn.getConn().createStatement();
                 rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-                    id = rs.getInt("id");
+                    id = rs.getInt("id_eventos");
                     desc = rs.getString("descricao");
                 }                
                 eventos.setId(id);
@@ -227,12 +227,13 @@ public class DAOEventos {
         return false;
     }                            
     
-    public List<Eventos> recuperaEventosPorMatricula(int id){                
-        sql = "SELECT id_tipo_evento, descricao, data, status FROM eventos WHERE id="+id;
+    public List<Eventos> recuperaEventosPorId(int id){                
+        sql = "SELECT id_eventos, id_tipo_evento, descricao, data, status FROM eventos WHERE id_eventos="+id;
         List eventos = new ArrayList<Eventos>();
         Eventos evento = new Eventos();
         String descricao = null;
         int idEve = 0;
+        int idTipoEvento = 0;
         Date data = null;
         int status = 0;        
         try {            
@@ -240,13 +241,54 @@ public class DAOEventos {
                 stmt = conn.getConn().createStatement();
                 rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-                    idEve       = rs.getInt("id");
-                    descricao   = rs.getString("descricao");
-                    data        = rs.getDate("data");
-                    status      = rs.getInt("status");                    
+                    idEve               = rs.getInt("id_eventos");
+                    idTipoEvento        = rs.getInt("id_tipo_evento");
+                    descricao           = rs.getString("descricao");
+                    data                = rs.getDate("data");
+                    status              = rs.getInt("status");                    
                 }      
                 if (id != 0) {
                     evento.setId(idEve);
+                    TipoEventos tipoEventos = new TipoEventos();
+                    tipoEventos.setId(idTipoEvento);
+                    evento.setTipoEvento(tipoEventos);
+                    evento.setDescricao(descricao);
+                    evento.setData(data);
+                    evento.setStatus(status);                    
+                    eventos.add(evento);                    
+                }                                                                
+            }                        
+        } catch (Exception e) {
+            System.out.println("Consulta não retornou resultado com os dados informados." + e.getMessage());                                
+        }        
+        return eventos;
+    }
+    
+    public List<Eventos> recuperaEventosPorDescricao(String desc){                
+        sql = "SELECT id_eventos, id_tipo_evento, descricao, data, status FROM eventos WHERE descricao like '%"+desc+"%'";
+        List eventos = new ArrayList<Eventos>(); 
+        Eventos evento = new Eventos();
+        String descricao = null;
+        int idEve = 0;
+        int idTipoEvento = 0;
+        Date data = null;
+        int status = 0;        
+        try {            
+            if (conn.conectar()) {                
+                stmt = conn.getConn().createStatement();
+                rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    idEve               = rs.getInt("id_eventos");
+                    idTipoEvento        = rs.getInt("id_tipo_evento");
+                    descricao           = rs.getString("descricao");
+                    data                = rs.getDate("data");
+                    status              = rs.getInt("status");                    
+                }      
+                if (idEve != 0) {
+                    evento.setId(idEve);
+                    TipoEventos tipoEventos = new TipoEventos();
+                    tipoEventos.setId(idTipoEvento);
+                    evento.setTipoEvento(tipoEventos);
                     evento.setDescricao(descricao);
                     evento.setData(data);
                     evento.setStatus(status);                    
