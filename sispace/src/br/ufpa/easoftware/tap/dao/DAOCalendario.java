@@ -6,6 +6,8 @@
 package br.ufpa.easoftware.tap.dao;
 
 import br.ufpa.easoftware.tap.model.Calendario;
+import br.ufpa.easoftware.tap.model.Cronograma;
+import br.ufpa.easoftware.tap.model.Disciplinas;
 import br.ufpa.easoftware.tap.model.Eventos;
 import br.ufpa.easoftware.tap.utils.Conexao;
 import java.sql.ResultSet;
@@ -36,8 +38,8 @@ public class DAOCalendario {
               + calendario.getDisciplina().getId() +","
               + calendario.getCronograma().getId()
               +","+calendario.getEvento().getId()
-              +","+calendario.getDia()+","+ calendario.getMes() 
-              +", "+ calendario.getMes() +", "+ calendario.getAno() 
+              +","+calendario.getDia() 
+              +", "+ calendario.getMes() +","+ calendario.getAno() 
               +", "+calendario.getStatus()+")";        
         try {                         
             if (conn.conectar()) {                
@@ -58,7 +60,7 @@ public class DAOCalendario {
                 + "dia="+calendario.getDia()+", "
                 + "mes="+calendario.getMes()+", "
                 + "ano="+calendario.getAno()+" "
-                + "WHERE id="+calendario.getId();                      
+                + "WHERE id_calendario="+calendario.getId();                      
         try {
             Conexao conn = new Conexao(); 
             if (conn.conectar()) {                
@@ -96,7 +98,7 @@ public class DAOCalendario {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                        
-                    int id = rs.getInt("id");                    
+                    int id = rs.getInt("id_calendario");                    
                     int idDisciplina = rs.getInt("id_disciplina");
                     int idCronograma = rs.getInt("id_cronograma");
                     int idEvento = rs.getInt("id_evento");
@@ -115,7 +117,7 @@ public class DAOCalendario {
     public String[] listarCalendarioPorId(int id, String ordem){                   
         String campoOrdena = null;
         if (ordem.equals("")){            
-            campoOrdena = "id";
+            campoOrdena = "id_calendario";
         }else {
             campoOrdena = ordem;        
         }        
@@ -132,14 +134,14 @@ public class DAOCalendario {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                                 
-                    int idCal = rs.getInt("id");                    
+                    int idCal = rs.getInt("id_calendario");                    
                     int idDisciplina = rs.getInt("id_disciplina");
                     int idCronograma = rs.getInt("id_cronograma");
                     int idEvento = rs.getInt("id_evento");
                     int dia      = rs.getInt("dia");
                     int mes     = rs.getInt("mes");
                     int ano     = rs.getInt("ano");                    
-                    retorno[cont] = idCal+"  " + idDisciplina + "      " + idCronograma + "  " + idCronograma + " " + idEvento +"   "+ dia + " "+ mes + "  "+ ano + "\n";                    
+                    retorno[cont] = "Cód.: "+idCal+" Cod. Evento: " + idEvento +"   Dia: "+ dia + " Mês: "+ mes + "  Ano: "+ ano + "\n";                    
                 }
             }                        
         } catch (Exception e) {            
@@ -169,7 +171,7 @@ public class DAOCalendario {
                 rs = stmt.executeQuery(sql);                                
                 while (rs.next()) {
                     cont = cont + 1;                                                                        
-                    int id = rs.getInt("id");                    
+                    int id = rs.getInt("id_calendario");                    
                     int idDisciplina = rs.getInt("id_disciplina");
                     int idCronograma = rs.getInt("id_cronograma");
                     int idEvento = rs.getInt("id_evento");
@@ -186,9 +188,7 @@ public class DAOCalendario {
     }
     
     public boolean existeCalendarioPorId(Calendario calendario){
-        sql = "SELECT id, status FROM calendario WHERE id ="+ calendario.getId();
-        int id=0;
-        
+        sql = "SELECT id_calendario, id_disciplina, id_cronograma, id_evento, dia , mes, ano, status FROM calendario WHERE id_calendario ="+ calendario.getId();                
         int idCal = 0;
         int idDisciplina = 0; 
         int idCronograma  = 0;
@@ -204,7 +204,7 @@ public class DAOCalendario {
                 rs = stmt.executeQuery(sql);
                 
                 while (rs.next()) {
-                    idCal = rs.getInt("id");                    
+                    idCal = rs.getInt("id_calendario");                    
                     idDisciplina = rs.getInt("id_disciplina");
                     idCronograma = rs.getInt("id_cronograma");
                     idEvento = rs.getInt("id_evento");
@@ -214,9 +214,15 @@ public class DAOCalendario {
                     status = rs.getInt("status");
                 }        
                 calendario.setId(idCal);
-                calendario.getDisciplina().setId(idDisciplina);
-                calendario.getCronograma().setId(idCronograma);
-                calendario.getEvento().setId(idEvento);
+                Disciplinas disciplinas = new Disciplinas();
+                disciplinas.setId(idDisciplina);
+                calendario.setDisciplina(disciplinas);
+                Cronograma cronograma = new Cronograma();
+                cronograma.setId(idCronograma);
+                calendario.setCronograma(cronograma);
+                Eventos eventos = new Eventos();
+                eventos.setId(idEvento);
+                calendario.setEvento(eventos);
                 calendario.setDia(dia);
                 calendario.setMes(mes);
                 calendario.setAno(ano);
@@ -232,7 +238,7 @@ public class DAOCalendario {
     }           
     
     public List<Calendario> recuperaCalendarioPorId(int id){                
-        sql = "SELECT id_calendario, id_disciplina, id_cronograma, id_evento, dia , mes, ano, status WHERE id="+id;
+        sql = "SELECT id_calendario, id_disciplina, id_cronograma, id_evento, dia , mes, ano, status FROM calendario WHERE id_calendario="+id;
         List listCalendario = new ArrayList<Calendario>();
         Calendario calendario = new Calendario();        
         int idCal = 0;
@@ -248,7 +254,7 @@ public class DAOCalendario {
                 stmt = conn.getConn().createStatement();
                 rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-                    idCal             = rs.getInt("id");
+                    idCal             = rs.getInt("id_calendario");
                     idDisc            = rs.getInt("id_disciplina");
                     idCrono           = rs.getInt("id_cronograma");
                     idEven            = rs.getInt("id_evento");
@@ -257,14 +263,20 @@ public class DAOCalendario {
                     ano               = rs.getInt("ano");
                     status            = rs.getInt("status");
                 }      
-                if (id != 0) {
+                if (idCal != 0) {
                     calendario.setId(idCal);
-                    calendario.getDisciplina().setId(idDisc);
-                    calendario.getCronograma().setId(idCrono);
-                    calendario.getEvento().setId(idEven);
+                    Disciplinas disciplinas = new Disciplinas();
+                    disciplinas.setId(idDisc);
+                    calendario.setDisciplina(disciplinas);
+                    Cronograma cronograma = new Cronograma();
+                    cronograma.setId(idCrono);
+                    calendario.setCronograma(cronograma);
+                    Eventos eventos = new Eventos();
+                    eventos.setId(idEven);
+                    calendario.setEvento(eventos);
                     calendario.setDia(dia);
                     calendario.setMes(mes);
-                    calendario.setAno(mes);
+                    calendario.setAno(ano);
                     calendario.setStatus(status);
                     listCalendario.add(calendario);                    
                 }                                                                

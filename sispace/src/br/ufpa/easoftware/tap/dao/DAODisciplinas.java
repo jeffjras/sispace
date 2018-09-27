@@ -126,8 +126,8 @@ public class DAODisciplinas {
                     cont = cont + 1;                                                                                 
                     int id = rs.getInt("id_disciplina");
                     String nome = rs.getString("nome");
-                    int cargaHoraria = rs.getInt("carga_horaria");                    
-                    retorno[cont] = id+"       " + nome.trim() + "                      " + cargaHoraria + "\n";                    
+                    //int cargaHoraria = rs.getInt("carga_horaria");                    
+                    retorno[cont] = id+"       " + nome.trim() + "\n";                    
                 }
             }                        
         } catch (Exception e) {            

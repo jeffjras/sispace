@@ -5,13 +5,14 @@
  */
 package br.ufpa.easoftware.tap.view.calendario;
 
+import br.ufpa.easoftware.tap.dao.DAOCalendario;
 import br.ufpa.easoftware.tap.dao.DAOCronograma;
-import br.ufpa.easoftware.tap.view.disciplina.*;
 import br.ufpa.easoftware.tap.dao.DAODisciplinas;
 import br.ufpa.easoftware.tap.dao.DAOEventos;
-import br.ufpa.easoftware.tap.dao.DAOProfessores;
+import br.ufpa.easoftware.tap.model.Calendario;
+import br.ufpa.easoftware.tap.model.Cronograma;
 import br.ufpa.easoftware.tap.model.Disciplinas;
-import br.ufpa.easoftware.tap.model.Professores;
+import br.ufpa.easoftware.tap.model.Eventos;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,9 +75,9 @@ public class CadCalendario extends javax.swing.JFrame {
         jComboBoxCronograma = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         jComboBoxEvento = new javax.swing.JComboBox<>();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jComboBox6 = new javax.swing.JComboBox<>();
+        txtDia = new javax.swing.JComboBox<>();
+        txtMes = new javax.swing.JComboBox<>();
+        txtAno = new javax.swing.JComboBox<>();
         txtIdCronograma = new javax.swing.JTextField();
         txtIdEvento = new javax.swing.JTextField();
 
@@ -128,11 +129,11 @@ public class CadCalendario extends javax.swing.JFrame {
 
         jComboBoxEvento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Selecione um item --", "Item 2", "Item 3", "Item 4" }));
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "26", "26", "27", "28", "29", "30" }));
+        txtDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "26", "26", "27", "28", "29", "30" }));
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+        txtMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
 
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2016", "2017", "2018", "2019", "2020" }));
+        txtAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2016", "2017", "2018", "2019", "2020" }));
 
         txtIdCronograma.setEnabled(false);
         txtIdCronograma.setName("idTipoEvento"); // NOI18N
@@ -174,11 +175,11 @@ public class CadCalendario extends javax.swing.JFrame {
                                     .addComponent(txtIdCronograma, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtIdEvento, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(152, 152, 152)
                         .addComponent(jButton1)))
@@ -213,9 +214,9 @@ public class CadCalendario extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -230,18 +231,23 @@ public class CadCalendario extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:        
-        Disciplinas disciplinas = new Disciplinas(); 
-        Professores professores = new Professores();
-        professores.setId(Integer.parseInt(txtIdDisciplina.getText()));
-        disciplinas.setProfessor(professores);
-        /*disciplinas.setNome(txtNome.getText());
-        disciplinas.setCargaHoraria(Integer.parseInt(txtCargaHorria.getText()));                
-        disciplinas.setEmenta(txtEmenta.getText());
-        disciplinas.setCreditos(Integer.parseInt(txtCredito.getText()));*/
-        disciplinas.setStatus(1);       
-        DAODisciplinas daoDisciplinas = new DAODisciplinas();
-        daoDisciplinas.inserir(disciplinas);
-        JOptionPane.showMessageDialog(null, "Disciplina inserida com sucesso!");
+        Calendario calendario = new Calendario(); 
+        Disciplinas disciplinas = new Disciplinas();
+        disciplinas.setId(Integer.parseInt(txtIdDisciplina.getText()));
+        calendario.setDisciplina(disciplinas);
+        Cronograma cronograma = new Cronograma();
+        cronograma.setId(Integer.parseInt(txtIdCronograma.getText()));
+        calendario.setCronograma(cronograma);
+        Eventos eventos = new Eventos();
+        eventos.setId(Integer.parseInt(txtIdEvento.getText()));
+        calendario.setEvento(eventos);                        
+        calendario.setDia(Integer.parseInt(txtDia.getSelectedItem().toString()));
+        calendario.setMes(Integer.parseInt(txtMes.getSelectedItem().toString()));
+        calendario.setAno(Integer.parseInt(txtAno.getSelectedItem().toString()));
+        calendario.setStatus(1);       
+        DAOCalendario daoCalendario = new DAOCalendario();
+        daoCalendario.inserir(calendario);
+        JOptionPane.showMessageDialog(null, "Calendário inserido com sucesso!");
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -1325,9 +1331,6 @@ public class CadCalendario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox6;
     private javax.swing.JComboBox<String> jComboBoxCronograma;
     private javax.swing.JComboBox<String> jComboBoxDisciplina;
     private javax.swing.JComboBox<String> jComboBoxEvento;
@@ -1339,9 +1342,12 @@ public class CadCalendario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JComboBox<String> txtAno;
+    private javax.swing.JComboBox<String> txtDia;
     private javax.swing.JTextField txtIdCronograma;
     private javax.swing.JTextField txtIdDisciplina;
     private javax.swing.JTextField txtIdEvento;
+    private javax.swing.JComboBox<String> txtMes;
     private javax.swing.JTextField txtStatus;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,6 +7,14 @@ package br.ufpa.easoftware.tap.view;
 
 import br.ufpa.easoftware.tap.dao.DAODisciplinas;
 import br.ufpa.easoftware.tap.dao.DAOProfessores;
+import br.ufpa.easoftware.tap.utils.Cal;
+import br.ufpa.easoftware.tap.view.aluno.MenuAluno;
+import br.ufpa.easoftware.tap.view.calendario.MenuCalendario;
+import br.ufpa.easoftware.tap.view.cronograma.MenuCronograma;
+import br.ufpa.easoftware.tap.view.disciplina.MenuDisciplina;
+import br.ufpa.easoftware.tap.view.evento.MenuEventos;
+import br.ufpa.easoftware.tap.view.professor.MenuProfessor;
+import br.ufpa.easoftware.tap.view.tipoeventos.MenuTipoEventos;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -21,7 +29,7 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         initComponents();
         
-        DAOProfessores daoProfessores = new DAOProfessores();                
+        /*DAOProfessores daoProfessores = new DAOProfessores();                
         DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(daoProfessores.listar());
         jComboBox2.setModel(defaultComboBoxModel);                
         txtIdProfessor.setText("" +  jComboBox2.getItemAt(jComboBox2.getSelectedIndex()).charAt(0));        
@@ -31,7 +39,8 @@ public class Menu extends javax.swing.JFrame {
         DefaultComboBoxModel defaultComboBoxModelDisc = new DefaultComboBoxModel(daoDisciplinas.listar());
         jComboBox3.setModel(defaultComboBoxModelDisc);                
         txtIdDisciplina.setText("" +  jComboBox3.getItemAt(jComboBox3.getSelectedIndex()).charAt(0));        
-        txtIdDisciplina.setVisible(false);        
+        txtIdDisciplina.setVisible(false);*/                
+        
     }
 
     /**
@@ -62,15 +71,18 @@ public class Menu extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -134,7 +146,7 @@ public class Menu extends javax.swing.JFrame {
 
         jMenu3.setText("Alunos");
 
-        jMenuItem1.setText("Cadastrar");
+        jMenuItem1.setText("Gerenciar Alunos");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -142,43 +154,78 @@ public class Menu extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem1);
 
-        jMenuItem2.setText("Alterar");
-        jMenu3.add(jMenuItem2);
+        jMenu1.add(jMenu3);
 
-        jMenuItem3.setText("Excluir");
+        jMenu4.setText("Cronograma");
+
+        jMenuItem2.setText("Gerenciar Cronograma");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem2);
+
+        jMenu1.add(jMenu4);
+
+        jMenu5.setText("Disciplinas");
+
+        jMenuItem3.setText("Gerenciar Disciplinas");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem3);
+        jMenu5.add(jMenuItem3);
 
-        jMenuItem4.setText("Listar");
+        jMenu1.add(jMenu5);
+
+        jMenu6.setText("Eventos");
+
+        jMenuItem4.setText("Gerenciar Eventos");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem4);
+        jMenu6.add(jMenuItem4);
 
-        jMenu1.add(jMenu3);
-
-        jMenu4.setText("Cronograma");
-        jMenu1.add(jMenu4);
-
-        jMenu5.setText("Disciplinas");
-        jMenu1.add(jMenu5);
-
-        jMenu6.setText("Eventos");
         jMenu1.add(jMenu6);
 
         jMenu7.setText("Professor");
+
+        jMenuItem5.setText("Gerenciar Professor");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem5);
+
         jMenu1.add(jMenu7);
 
         jMenu8.setText("Tipo de Eventos");
+
+        jMenuItem6.setText("Gerenciar Tipo Eventos");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem6);
+
         jMenu1.add(jMenu8);
 
         jMenu9.setText("Calendário");
+
+        jMenuItem7.setText("Gerenciar Calendário");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu9.add(jMenuItem7);
+
         jMenu1.add(jMenu9);
 
         jMenuBar1.add(jMenu1);
@@ -255,18 +302,6 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -301,6 +336,55 @@ public class Menu extends javax.swing.JFrame {
             jComboBox3.setEnabled(true);        
         } 
     }//GEN-LAST:event_jCheckBox3MouseClicked
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        MenuAluno menuAluno = new MenuAluno();
+        menuAluno.setTitle("Gerenciar Alunos");
+        menuAluno.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        MenuCronograma menuCronograma = new MenuCronograma();
+        menuCronograma.setTitle("Gerenciar Cronograma");
+        menuCronograma.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        MenuDisciplina menuDisciplinas = new MenuDisciplina();
+        menuDisciplinas.setTitle("Gerenciar Disciplinas");
+        menuDisciplinas.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        MenuEventos menuEventos = new MenuEventos();
+        menuEventos.setTitle("Gerenciar Eventos");
+        menuEventos.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        MenuProfessor menuProfessor = new MenuProfessor();
+        menuProfessor.setTitle("Gerenciar Professor");
+        menuProfessor.setVisible(true);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+        MenuTipoEventos menuTipoEventos = new MenuTipoEventos();
+        menuTipoEventos.setTitle("Gerenciar Tipo Eventos");
+        menuTipoEventos.setVisible(true);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // TODO add your handling code here:
+        MenuCalendario menuCalendario = new MenuCalendario();
+        menuCalendario.setTitle("Gerenciar Calendário");
+        menuCalendario.setVisible(true);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -379,6 +463,9 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField txtIdDisciplina;
     private javax.swing.JTextField txtIdProfessor;

@@ -5,11 +5,9 @@
  */
 package br.ufpa.easoftware.tap.view.calendario;
 
-import br.ufpa.easoftware.tap.view.disciplina.*;
 import br.ufpa.easoftware.tap.dao.DAOCalendario;
 import br.ufpa.easoftware.tap.dao.DAOEventos;
 import br.ufpa.easoftware.tap.model.Calendario;
-import br.ufpa.easoftware.tap.model.Disciplinas;
 import br.ufpa.easoftware.tap.model.Eventos;
 import java.util.ArrayList;
 import java.util.List;

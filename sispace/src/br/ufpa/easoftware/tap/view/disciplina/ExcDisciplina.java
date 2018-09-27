@@ -140,7 +140,7 @@ public class ExcDisciplina extends javax.swing.JFrame {
         if (!txtCodigo.getText().equals("")) {
             disciplinas.setId(Integer.parseInt(txtCodigo.getText()));            
             if (daoDisciplinas.existeDisciplinaPorId(disciplinas)) {
-                dadosDisc = daoDisciplinas.listarDisciplinaPorId(disciplinas.getId(), "id_disciplinas");
+                dadosDisc = daoDisciplinas.listarDisciplinaPorId(disciplinas.getId(), "id_disciplina");
                 jList1.setListData(dadosDisc);
             }            
         }        

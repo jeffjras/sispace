@@ -5,11 +5,14 @@
  */
 package br.ufpa.easoftware.tap.view.calendario;
 
-import br.ufpa.easoftware.tap.view.disciplina.*;
+import br.ufpa.easoftware.tap.dao.DAOCalendario;
+import br.ufpa.easoftware.tap.dao.DAOCronograma;
 import br.ufpa.easoftware.tap.dao.DAODisciplinas;
-import br.ufpa.easoftware.tap.dao.DAOProfessores;
+import br.ufpa.easoftware.tap.dao.DAOEventos;
+import br.ufpa.easoftware.tap.model.Calendario;
+import br.ufpa.easoftware.tap.model.Cronograma;
 import br.ufpa.easoftware.tap.model.Disciplinas;
-import br.ufpa.easoftware.tap.model.Professores;
+import br.ufpa.easoftware.tap.model.Eventos;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,28 +35,69 @@ public class AltCalendario extends javax.swing.JFrame {
      */
     public AltCalendario() {
         initComponents();        
-        txtIdProfessor.setVisible(true);        
+        txtIdDisciplina.setVisible(false);        
+        txtIdCronograma.setVisible(false);
+        txtIdEvento.setVisible(false);
         this.id = Integer.parseInt(JOptionPane.showInputDialog("Informe um código para alterar:"));
-        localizaDisciplinasPorId();        
+        localizaCalendarioPorId();        
     }
     
-    public void localizaDisciplinasPorId() {
-        DAODisciplinas daoDisciplinas = new DAODisciplinas();
-        List<Disciplinas> dados = daoDisciplinas.recuperaDisciplinaPorId(this.id);
+    public void localizaCalendarioPorId() {
+        DAOCalendario daoCalendario = new DAOCalendario();
+        List<Calendario> dados = daoCalendario.recuperaCalendarioPorId(this.id);
         if (dados.size() == 0) {
             JOptionPane.showMessageDialog(null, "Registro não localizado!");
             return;
         }else {
-            txtIdProfessor.setText(String.valueOf(dados.get(0).getProfessor().getId()));
-            DAOProfessores daoProfessor = new DAOProfessores();                
-            DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(daoProfessor.listarProfessorPorId(Integer.parseInt(txtIdProfessor.getText()), "id_professor"));
-            jComboBox2.setModel(defaultComboBoxModel);                        
-            txtNome.setEnabled(true);
-            txtNome.setText(dados.get(0).getNome());
-            txtCargaHoraria.setText(String.valueOf(dados.get(0).getCargaHoraria()));
-            txtEmenta.setText(dados.get(0).getEmenta());
-            txtCreditos.setEnabled(true);
-            txtCreditos.setText(String.valueOf(dados.get(0).getCreditos()));            
+            txtIdDisciplina.setText(String.valueOf(dados.get(0).getDisciplina().getId()));
+            DAODisciplinas daoDisciplina = new DAODisciplinas();                
+            DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(daoDisciplina.listarDisciplinaPorId(Integer.parseInt(txtIdDisciplina.getText()), "id_disciplina"));
+            jComboBoxDisciplina.setModel(defaultComboBoxModel);                        
+            
+            txtIdCronograma.setText(String.valueOf(dados.get(0).getCronograma().getId()));
+            DAOCronograma daoCronograma = new DAOCronograma();                
+            DefaultComboBoxModel defaultComboBoxModelCrono = new DefaultComboBoxModel(daoCronograma.listarCronogramaPorId(Integer.parseInt(txtIdCronograma.getText()), "id_cronograma"));
+            jComboBoxCronograma.setModel(defaultComboBoxModelCrono);
+            
+            txtIdEvento.setText(String.valueOf(dados.get(0).getEvento().getId()));
+            DAOEventos daoEventos = new DAOEventos();                
+            DefaultComboBoxModel defaultComboBoxModelEve = new DefaultComboBoxModel(daoEventos.listarEventoPorId(Integer.parseInt(txtIdEvento.getText()), "id_eventos"));
+            jComboBoxEvento.setModel(defaultComboBoxModelEve);
+            txtDia.setEnabled(true);
+            txtMes.setEnabled(true);
+            txtAno.setEnabled(true);                      
+            int opcao = dados.get(0).getAno();  
+            int ano = 0;            
+            switch (opcao) {
+                case 2016: 
+                {
+                    ano = 0;
+                    break;
+                }
+                case 2017: 
+                {
+                    ano = 1;
+                    break;
+                }
+                case 2018: 
+                {
+                    ano = 2;
+                    break;
+                }
+                case 2019: 
+                {
+                    ano = 3;
+                    break;
+                }
+                case 2020: 
+                {
+                    ano = 4;
+                    break;
+                }                                   
+            }                                                                           
+            txtDia.setSelectedIndex(dados.get(0).getDia()-1);
+            txtMes.setSelectedIndex(dados.get(0).getMes()-1);
+            txtAno.setSelectedIndex(ano);                        
             txtStatus.setText(String.valueOf(dados.get(0).getStatus()));
             txtStatus.setEnabled(false);
         }
@@ -68,36 +112,32 @@ public class AltCalendario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtStatus = new javax.swing.JTextField();
-        txtCreditos = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jComboBoxCronograma = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txtNome = new javax.swing.JTextField();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        txtIdProfessor = new javax.swing.JTextField();
+        jComboBoxEvento = new javax.swing.JComboBox<>();
+        jComboBoxDisciplina = new javax.swing.JComboBox<>();
+        txtDia = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        txtMes = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        txtAno = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        txtIdCronograma = new javax.swing.JTextField();
+        txtStatus = new javax.swing.JTextField();
+        txtIdEvento = new javax.swing.JTextField();
+        txtIdDisciplina = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtCargaHoraria = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtEmenta = new javax.swing.JTextArea();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        txtStatus.setEnabled(false);
-
-        txtCreditos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCreditosActionPerformed(evt);
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
             }
         });
-
-        jLabel2.setText("Créditos");
-
-        jLabel1.setText("Status");
 
         jButton1.setText("Gravar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -107,82 +147,85 @@ public class AltCalendario extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        jLabel3.setText("ALTERA DISCIPLINA");
+        jLabel3.setText("ALTERA CALENDARIO");
 
-        jLabel4.setText("Professor");
-
-        jLabel5.setText("Nome");
-
-        txtNome.setEnabled(false);
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Selecione um item --", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.addItemListener(new java.awt.event.ItemListener() {
+        jComboBoxCronograma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Selecione um item --", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxCronograma.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBox2ItemStateChanged(evt);
+                jComboBoxCronogramaItemStateChanged(evt);
             }
         });
-        jComboBox2.addFocusListener(new java.awt.event.FocusAdapter() {
+        jComboBoxCronograma.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jComboBox2FocusGained(evt);
+                jComboBoxCronogramaFocusGained(evt);
             }
         });
-        jComboBox2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jComboBox2MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jComboBox2MouseEntered(evt);
+
+        jLabel10.setText("Evento");
+
+        jLabel5.setText("Dia");
+
+        jComboBoxEvento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Selecione um item --", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxEvento.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxEventoItemStateChanged(evt);
             }
         });
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        jComboBoxEvento.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jComboBoxEventoFocusGained(evt);
+            }
+        });
+
+        jComboBoxDisciplina.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Selecione um item --", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxDisciplina.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxDisciplinaItemStateChanged(evt);
+            }
+        });
+        jComboBoxDisciplina.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jComboBoxDisciplinaFocusGained(evt);
+            }
+        });
+        jComboBoxDisciplina.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                jComboBoxDisciplinaActionPerformed(evt);
             }
         });
 
-        txtIdProfessor.setEnabled(false);
-        txtIdProfessor.setName("idTipoEvento"); // NOI18N
+        txtDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "26", "26", "27", "28", "29", "30" }));
 
-        jLabel6.setText("Carga Horária");
+        jLabel1.setText("Disciplina");
 
-        jLabel7.setText("Ementa");
+        txtMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
 
-        txtEmenta.setColumns(20);
-        txtEmenta.setRows(5);
-        jScrollPane1.setViewportView(txtEmenta);
+        jLabel2.setText("Ano");
+
+        txtAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2016", "2017", "2018", "2019", "2020" }));
+
+        jLabel4.setText("Status");
+
+        txtIdCronograma.setEnabled(false);
+        txtIdCronograma.setName("idTipoEvento"); // NOI18N
+
+        txtStatus.setEnabled(false);
+        txtStatus.setName("txtStatus"); // NOI18N
+
+        txtIdEvento.setEnabled(false);
+        txtIdEvento.setName("idTipoEvento"); // NOI18N
+
+        txtIdDisciplina.setEnabled(false);
+        txtIdDisciplina.setName("idTipoEvento"); // NOI18N
+
+        jLabel6.setText("Mês");
+
+        jLabel9.setText("Cronograma");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(41, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel1)
-                            .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 188, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtNome, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, 0, 270, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtCargaHoraria, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCreditos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtIdProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(46, 46, 46))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -191,41 +234,78 @@ public class AltCalendario extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(131, 131, 131)
                         .addComponent(jButton1)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 87, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(55, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(43, 43, 43)
+                        .addComponent(jLabel6)
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel2))
+                    .addComponent(jLabel10)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jComboBoxEvento, javax.swing.GroupLayout.Alignment.LEADING, 0, 215, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtStatus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxDisciplina, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxCronograma, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtIdDisciplina, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                            .addComponent(txtIdCronograma)
+                            .addComponent(txtIdEvento)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLabel3)
-                .addGap(28, 28, 28)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCargaHoraria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIdProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIdDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxCronograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIdCronograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIdEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addContainerGap())
+                .addGap(20, 20, 20))
         );
 
         pack();
@@ -233,55 +313,70 @@ public class AltCalendario extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:        
+        Calendario calendario = new Calendario();
+        calendario.setId(id);        
         Disciplinas disciplinas = new Disciplinas();
-        disciplinas.setId(id);
-        Professores professores = new Professores();
-        professores.setId(Integer.parseInt(txtIdProfessor.getText()));
-        disciplinas.setProfessor(professores);
-        disciplinas.setNome(txtNome.getText());
-        disciplinas.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
-        disciplinas.setEmenta(txtEmenta.getText());
-        disciplinas.setCreditos(Integer.parseInt(txtCreditos.getText()));
+        disciplinas.setId(Integer.parseInt(txtIdDisciplina.getText()));
+        calendario.setDisciplina(disciplinas);
+        Cronograma cronograma = new Cronograma();
+        cronograma.setId(Integer.parseInt(txtIdCronograma.getText()));
+        calendario.setCronograma(cronograma);        
+        Eventos eventos = new Eventos();
+        eventos.setId(Integer.parseInt(txtIdEvento.getText()));
+        calendario.setEvento(eventos);
+        calendario.setDia(Integer.parseInt(txtDia.getSelectedItem().toString()));
+        calendario.setMes(Integer.parseInt(txtMes.getSelectedItem().toString()));
+        calendario.setAno(Integer.parseInt(txtAno.getSelectedItem().toString()));
         disciplinas.setStatus(1);        
-        DAODisciplinas daoDisciplinas = new DAODisciplinas();
-        daoDisciplinas.atualizar(disciplinas);
-        JOptionPane.showMessageDialog(null, "Disciplina alterada com Sucesso!");   
+        DAOCalendario daoCalendario = new DAOCalendario();
+        daoCalendario.atualizar(calendario);
+        JOptionPane.showMessageDialog(null, "Calendário alterado com Sucesso!");   
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void txtCreditosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCreditosActionPerformed
+    private void jComboBoxDisciplinaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxDisciplinaItemStateChanged
         // TODO add your handling code here:
-        //DAOProfessores daoProfessores = new DAOProfessores();                
-        //DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(daoProfessores.listar());
-        //jComboBox2.setModel(defaultComboBoxModel);
-    }//GEN-LAST:event_txtCreditosActionPerformed
+        txtIdDisciplina.setText("" +  jComboBoxDisciplina.getItemAt(jComboBoxDisciplina.getSelectedIndex()).charAt(0));
+    }//GEN-LAST:event_jComboBoxDisciplinaItemStateChanged
 
-    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
-        // TODO add your handling code here:        
-        txtIdProfessor.setText("" +  jComboBox2.getItemAt(jComboBox2.getSelectedIndex()).charAt(0));
-    }//GEN-LAST:event_jComboBox2ItemStateChanged
-
-    private void jComboBox2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox2MouseClicked
+    private void jComboBoxDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxDisciplinaActionPerformed
         // TODO add your handling code here:
-        //DAOProfessores daoProfessores = new DAOProfessores();                
-        //DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(daoProfessores.listar());
-        //jComboBox2.setModel(defaultComboBoxModel);
-    }//GEN-LAST:event_jComboBox2MouseClicked
+    }//GEN-LAST:event_jComboBoxDisciplinaActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void jComboBoxCronogramaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxCronogramaItemStateChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+        txtIdCronograma.setText("" +  jComboBoxCronograma.getItemAt(jComboBoxCronograma.getSelectedIndex()).charAt(0));
+    }//GEN-LAST:event_jComboBoxCronogramaItemStateChanged
 
-    private void jComboBox2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboBox2FocusGained
+    private void jComboBoxEventoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxEventoItemStateChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2FocusGained
+        txtIdEvento.setText("" +  jComboBoxEvento.getItemAt(jComboBoxEvento.getSelectedIndex()).charAt(0));
+    }//GEN-LAST:event_jComboBoxEventoItemStateChanged
 
-    private void jComboBox2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jComboBox2MouseEntered
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
         // TODO add your handling code here:
-        DAOProfessores daoProfessores = new DAOProfessores();                
-        DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(daoProfessores.listar());
-        jComboBox2.setModel(defaultComboBoxModel);
-    }//GEN-LAST:event_jComboBox2MouseEntered
+    }//GEN-LAST:event_formFocusGained
+
+    private void jComboBoxDisciplinaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboBoxDisciplinaFocusGained
+        // TODO add your handling code here:
+        DAODisciplinas daoDisciplinas = new DAODisciplinas();                
+        DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(daoDisciplinas.listar());
+        jComboBoxDisciplina.setModel(defaultComboBoxModel);
+    }//GEN-LAST:event_jComboBoxDisciplinaFocusGained
+
+    private void jComboBoxCronogramaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboBoxCronogramaFocusGained
+        // TODO add your handling code here:
+        DAOCronograma daoCronograma = new DAOCronograma();                
+        DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(daoCronograma.listar());
+        jComboBoxCronograma.setModel(defaultComboBoxModel);
+    }//GEN-LAST:event_jComboBoxCronogramaFocusGained
+
+    private void jComboBoxEventoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboBoxEventoFocusGained
+        // TODO add your handling code here:
+        DAOEventos daoEventos = new DAOEventos();                
+        DefaultComboBoxModel defaultComboBoxModelEve = new DefaultComboBoxModel(daoEventos.listarEventoPorId(Integer.parseInt(txtIdEvento.getText()), "id_eventos"));
+        jComboBoxEvento.setModel(defaultComboBoxModelEve);
+    }//GEN-LAST:event_jComboBoxEventoFocusGained
 
     public Date getParsedDate(String data){
         DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -2378,20 +2473,23 @@ public class AltCalendario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBoxCronograma;
+    private javax.swing.JComboBox<String> jComboBoxDisciplina;
+    private javax.swing.JComboBox<String> jComboBoxEvento;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField txtCargaHoraria;
-    private javax.swing.JTextField txtCreditos;
-    private javax.swing.JTextArea txtEmenta;
-    private javax.swing.JTextField txtIdProfessor;
-    private javax.swing.JTextField txtNome;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JComboBox<String> txtAno;
+    private javax.swing.JComboBox<String> txtDia;
+    private javax.swing.JTextField txtIdCronograma;
+    private javax.swing.JTextField txtIdDisciplina;
+    private javax.swing.JTextField txtIdEvento;
+    private javax.swing.JComboBox<String> txtMes;
     private javax.swing.JTextField txtStatus;
     // End of variables declaration//GEN-END:variables
 }

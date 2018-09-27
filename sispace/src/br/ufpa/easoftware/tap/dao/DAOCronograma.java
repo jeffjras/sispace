@@ -130,9 +130,9 @@ public class DAOCronograma {
                 while (rs.next()) {
                     cont = cont + 1;                                                                                 
                     int idCrono = rs.getInt("id_cronograma");
-                    Date dataCronograma = rs.getDate("data");
+                    //Date dataCronograma = rs.getDate("data");
                     String descricao = rs.getString("descricao");                    
-                    retorno[cont] = idCrono+"       " + dataCronograma + "                      " + descricao.trim() + "\n";                    
+                    retorno[cont] = idCrono+"       " + descricao.trim() + "\n";                    
                 }
             }                        
         } catch (Exception e) {            
