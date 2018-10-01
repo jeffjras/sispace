@@ -140,8 +140,11 @@ public class DAOCalendario {
                     int idEvento = rs.getInt("id_evento");
                     int dia      = rs.getInt("dia");
                     int mes     = rs.getInt("mes");
-                    int ano     = rs.getInt("ano");                    
-                    retorno[cont] = "Cód.: "+idCal+" Cod. Evento: " + idEvento +"   Dia: "+ dia + " Mês: "+ mes + "  Ano: "+ ano + "\n";                    
+                    int ano     = rs.getInt("ano");
+                    List<Eventos> dadosEventos = new ArrayList<>();
+                    DAOEventos daoEventos = new DAOEventos();
+                    dadosEventos = daoEventos.recuperaEventosPorId(idEvento);
+                    retorno[cont] = "Cód.: "+idCal+" Evento: " + dadosEventos.get(0).getDescricao() +" Data: "+ dia + "/"+ mes + "/"+ ano + "\n";                    
                 }
             }                        
         } catch (Exception e) {            
@@ -280,6 +283,53 @@ public class DAOCalendario {
                     calendario.setStatus(status);
                     listCalendario.add(calendario);                    
                 }                                                                
+            }                        
+        } catch (Exception e) {
+            System.out.println("Consulta não retornou resultado com os dados informados." + e.getMessage());                                
+        }        
+        return listCalendario;
+    }
+    public List<Calendario> recuperaTodosCalendario(){                
+        sql = "SELECT id_calendario, id_disciplina, id_cronograma, id_evento, dia , mes, ano, status FROM calendario ";
+        List listCalendario = new ArrayList<Calendario>();                
+        int idCal = 0;
+        int idDisc = 0;
+        int idCrono = 0;
+        int idEven = 0;
+        int dia = 0;
+        int mes = 0;
+        int ano = 0;
+        int status = 0;        
+        try {            
+            if (conn.conectar()) {                
+                stmt = conn.getConn().createStatement();
+                rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    idCal             = rs.getInt("id_calendario");
+                    idDisc            = rs.getInt("id_disciplina");
+                    idCrono           = rs.getInt("id_cronograma");
+                    idEven            = rs.getInt("id_evento");
+                    dia               = rs.getInt("dia");
+                    mes               = rs.getInt("mes");
+                    ano               = rs.getInt("ano");
+                    status            = rs.getInt("status"); 
+                    Calendario calendario = new Calendario();
+                    calendario.setId(idCal);
+                    Disciplinas disciplinas = new Disciplinas();
+                    disciplinas.setId(idDisc);
+                    calendario.setDisciplina(disciplinas);
+                    Cronograma cronograma = new Cronograma();
+                    cronograma.setId(idCrono);
+                    calendario.setCronograma(cronograma);
+                    Eventos eventos = new Eventos();
+                    eventos.setId(idEven);
+                    calendario.setEvento(eventos);
+                    calendario.setDia(dia);
+                    calendario.setMes(mes);
+                    calendario.setAno(ano);
+                    calendario.setStatus(status);
+                    listCalendario.add(calendario);
+                }                                                                                     
             }                        
         } catch (Exception e) {
             System.out.println("Consulta não retornou resultado com os dados informados." + e.getMessage());                                

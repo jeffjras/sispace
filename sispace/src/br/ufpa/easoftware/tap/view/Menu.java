@@ -5,9 +5,12 @@
  */
 package br.ufpa.easoftware.tap.view;
 
+import br.ufpa.easoftware.tap.dao.DAOCalendario;
 import br.ufpa.easoftware.tap.dao.DAODisciplinas;
+import br.ufpa.easoftware.tap.dao.DAOEventos;
 import br.ufpa.easoftware.tap.dao.DAOProfessores;
-import br.ufpa.easoftware.tap.utils.Cal;
+import br.ufpa.easoftware.tap.model.Calendario;
+import br.ufpa.easoftware.tap.model.Eventos;
 import br.ufpa.easoftware.tap.view.aluno.MenuAluno;
 import br.ufpa.easoftware.tap.view.calendario.MenuCalendario;
 import br.ufpa.easoftware.tap.view.cronograma.MenuCronograma;
@@ -15,6 +18,10 @@ import br.ufpa.easoftware.tap.view.disciplina.MenuDisciplina;
 import br.ufpa.easoftware.tap.view.evento.MenuEventos;
 import br.ufpa.easoftware.tap.view.professor.MenuProfessor;
 import br.ufpa.easoftware.tap.view.tipoeventos.MenuTipoEventos;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.util.List;
+import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -27,20 +34,32 @@ public class Menu extends javax.swing.JFrame {
      * Creates new form 
      */
     public Menu() {
-        initComponents();
+        initComponents();        
         
-        /*DAOProfessores daoProfessores = new DAOProfessores();                
+        DAOProfessores daoProfessores = new DAOProfessores();                
         DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(daoProfessores.listar());
-        jComboBox2.setModel(defaultComboBoxModel);                
-        txtIdProfessor.setText("" +  jComboBox2.getItemAt(jComboBox2.getSelectedIndex()).charAt(0));        
+        jComboBoxProf.setModel(defaultComboBoxModel);                
+        txtIdProfessor.setText("" +  jComboBoxProf.getItemAt(jComboBoxProf.getSelectedIndex()).charAt(0));        
         txtIdProfessor.setVisible(false);
         
         DAODisciplinas daoDisciplinas = new DAODisciplinas();                
         DefaultComboBoxModel defaultComboBoxModelDisc = new DefaultComboBoxModel(daoDisciplinas.listar());
-        jComboBox3.setModel(defaultComboBoxModelDisc);                
-        txtIdDisciplina.setText("" +  jComboBox3.getItemAt(jComboBox3.getSelectedIndex()).charAt(0));        
-        txtIdDisciplina.setVisible(false);*/                
+        jComboBoxDisc.setModel(defaultComboBoxModelDisc);                
+        txtIdDisciplina.setText("" +  jComboBoxDisc.getItemAt(jComboBoxDisc.getSelectedIndex()).charAt(0));        
+        txtIdDisciplina.setVisible(false);                
         
+        DAOEventos daoEventos = new DAOEventos();                
+        DefaultComboBoxModel defaultComboBoxModelEven = new DefaultComboBoxModel(daoEventos.listar());
+        jComboBoxEvento.setModel(defaultComboBoxModelEven);                
+        txtIdEvento.setText("" +  jComboBoxEvento.getItemAt(jComboBoxEvento.getSelectedIndex()).charAt(0));        
+        txtIdEvento.setVisible(false);
+        
+        jCheckBoxTodosProf.setVisible(false);
+        jCheckBoxTodosDisci.setVisible(false);
+        jCheckBoxTodosEven.setVisible(false);
+        jComboBoxProf.setVisible(false);
+        jComboBoxDisc.setVisible(false);        
+        jComboBoxEvento.setVisible(false);
     }
 
     /**
@@ -52,21 +71,16 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        jCheckBoxTodosProf = new javax.swing.JCheckBox();
+        jCheckBoxTodosDisci = new javax.swing.JCheckBox();
+        jComboBoxProf = new javax.swing.JComboBox<>();
+        jComboBoxDisc = new javax.swing.JComboBox<>();
         txtIdProfessor = new javax.swing.JTextField();
         txtIdDisciplina = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
+        jComboBoxEvento = new javax.swing.JComboBox<>();
+        jCheckBoxTodosEven = new javax.swing.JCheckBox();
+        txtIdEvento = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -84,63 +98,66 @@ public class Menu extends javax.swing.JFrame {
         jMenu9 = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel8.setText("Professor");
-
-        jLabel9.setText("Disciplina");
-
-        jLabel10.setText("LEGENDA");
-
-        jLabel11.setText("Mês");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" }));
-
-        jButton1.setText("GERAR PAINEL");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jCheckBoxTodosProf.setText("Todos Professores");
+        jCheckBoxTodosProf.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBoxTodosProfMouseClicked(evt);
+            }
+        });
+        jCheckBoxTodosProf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jCheckBoxTodosProfActionPerformed(evt);
             }
         });
 
-        jScrollPane1.setViewportView(jList1);
-
-        jCheckBox1.setText("Todos");
-        jCheckBox1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jCheckBoxTodosDisci.setText("Todas Disciplinas");
+        jCheckBoxTodosDisci.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jCheckBox1MouseClicked(evt);
-            }
-        });
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                jCheckBoxTodosDisciMouseClicked(evt);
             }
         });
 
-        jCheckBox2.setText("Todos");
-        jCheckBox2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jCheckBox2MouseClicked(evt);
-            }
-        });
+        jComboBoxProf.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jCheckBox3.setText("Todas");
-        jCheckBox3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jCheckBox3MouseClicked(evt);
-            }
-        });
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxDisc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         txtIdProfessor.setEnabled(false);
         txtIdProfessor.setName("idTipoEvento"); // NOI18N
 
         txtIdDisciplina.setEnabled(false);
         txtIdDisciplina.setName("idTipoEvento"); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 406, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jComboBoxEvento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jCheckBoxTodosEven.setText("Todas Eventos");
+        jCheckBoxTodosEven.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBoxTodosEvenMouseClicked(evt);
+            }
+        });
+        jCheckBoxTodosEven.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxTodosEvenActionPerformed(evt);
+            }
+        });
+
+        txtIdEvento.setEnabled(false);
+        txtIdEvento.setName("idTipoEvento"); // NOI18N
 
         jMenu1.setText("Cadastros");
 
@@ -231,6 +248,15 @@ public class Menu extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Painel Cronológico de Eventos");
+
+        jMenuItem8.setText("Gerar Painel");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem8);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -241,101 +267,68 @@ public class Menu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jCheckBoxTodosProf, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jCheckBoxTodosDisci, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBoxProf, javax.swing.GroupLayout.Alignment.LEADING, 0, 197, Short.MAX_VALUE)
+                            .addComponent(jComboBoxDisc, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jCheckBoxTodosEven, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox3))
-                    .addComponent(jLabel10)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addGap(10, 10, 10)
-                        .addComponent(jCheckBox1))
-                    .addComponent(jComboBox1, 0, 197, Short.MAX_VALUE)
-                    .addComponent(jButton1)
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtIdDisciplina, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                            .addComponent(txtIdProfessor)))
+                    .addComponent(jComboBoxEvento, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtIdEvento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtIdProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIdDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jCheckBox1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jCheckBox2))
+                .addContainerGap()
+                .addComponent(jCheckBoxTodosProf)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxProf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtIdProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jCheckBox3))
+                .addComponent(jCheckBoxTodosDisci)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxDisc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtIdDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel10)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                .addComponent(jCheckBoxTodosEven)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtIdEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(157, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jCheckBoxTodosProfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBoxTodosProfMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
-
-    private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
-        // TODO add your handling code here:
-        if (jCheckBox1.isSelected()) {
-            jComboBox1.setEnabled(false);
+        if (jCheckBoxTodosProf.isSelected()) {
+            jComboBoxProf.setEnabled(false);
         } else {
-            jComboBox1.setEnabled(true);        
-        }    
-    }//GEN-LAST:event_jCheckBox1MouseClicked
-
-    private void jCheckBox2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox2MouseClicked
-        // TODO add your handling code here:
-        if (jCheckBox2.isSelected()) {
-            jComboBox2.setEnabled(false);
-        } else {
-            jComboBox2.setEnabled(true);        
+            jComboBoxProf.setEnabled(true);        
         } 
-    }//GEN-LAST:event_jCheckBox2MouseClicked
+    }//GEN-LAST:event_jCheckBoxTodosProfMouseClicked
 
-    private void jCheckBox3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox3MouseClicked
+    private void jCheckBoxTodosDisciMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBoxTodosDisciMouseClicked
         // TODO add your handling code here:
-        if (jCheckBox3.isSelected()) {
-            jComboBox3.setEnabled(false);
+        if (jCheckBoxTodosDisci.isSelected()) {
+            jComboBoxDisc.setEnabled(false);
         } else {
-            jComboBox3.setEnabled(true);        
+            jComboBoxDisc.setEnabled(true);        
         } 
-    }//GEN-LAST:event_jCheckBox3MouseClicked
+    }//GEN-LAST:event_jCheckBoxTodosDisciMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
@@ -380,11 +373,107 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:       
         MenuCalendario menuCalendario = new MenuCalendario();
         menuCalendario.setTitle("Gerenciar Calendário");
         menuCalendario.setVisible(true);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jCheckBoxTodosProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxTodosProfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxTodosProfActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+        jCheckBoxTodosProf.setVisible(true);
+        jCheckBoxTodosDisci.setVisible(true);
+        jComboBoxProf.setVisible(true);
+        jComboBoxDisc.setVisible(true);  
+        jComboBoxEvento.setVisible(true);
+        
+        DAOCalendario daoCalendario = new DAOCalendario();
+        List<Calendario> dados = dados = daoCalendario.recuperaTodosCalendario();
+        for (Calendario dado : dados) {
+            Container c = this.getContentPane();
+            c.setLayout(new FlowLayout());        
+            Cal cal = new Cal();
+            switch (dado.getMes()) {
+                case 1: 
+                {   
+                    cal.monthChoice.setSelectedIndex(dado.getMes()-1);
+                    break;
+                }
+                case 2: 
+                {                
+                    cal.monthChoice.setSelectedIndex(dado.getMes()-1);
+                    break;
+                }
+                case 3: 
+                {                
+                    cal.monthChoice.setSelectedIndex(dado.getMes()-1);
+                    break;
+                }
+                case 4: 
+                {                
+                    cal.monthChoice.setSelectedIndex(dado.getMes()-1);
+                    break;
+                }
+                case 5: 
+                {                
+                    cal.monthChoice.setSelectedIndex(dado.getMes()-1);
+                    break;
+                }
+                case 6: 
+                {                                
+                    cal.monthChoice.setSelectedIndex(dado.getMes()-1);
+                    break;
+                }
+                case 7: 
+                {                                
+                    cal.monthChoice.setSelectedIndex(dado.getMes()-1);
+                    break;
+                }
+                case 8: 
+                {                                
+                    cal.monthChoice.setSelectedIndex(dado.getMes()-1);
+                    break;
+                }
+                case 9: 
+                {                                
+                    cal.monthChoice.setSelectedIndex(dado.getMes()-1);
+                    break;
+                }
+                case 10: 
+                {                                
+                    cal.monthChoice.setSelectedIndex(dado.getMes()-1);
+                    break;
+                }
+                case 11: 
+                {                                
+                    cal.monthChoice.setSelectedIndex(dado.getMes()-1);
+                    break;
+                }
+                case 12: 
+                {                                
+                    cal.monthChoice.setSelectedIndex(dado.getMes()-1);
+                    break;
+                }
+            }           
+            DAOEventos daoEventos = new DAOEventos();
+            List<Eventos> dadosEve = daoEventos.recuperaEventosPorId(dado.getEvento().getId());
+            cal.texto.setText(dadosEve.get(0).getDescricao());
+            cal.setDayActive(dado.getDia());
+            c.add(cal);
+        }                       
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jCheckBoxTodosEvenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBoxTodosEvenMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxTodosEvenMouseClicked
+
+    private void jCheckBoxTodosEvenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxTodosEvenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxTodosEvenActionPerformed
 
     /**
      * @param args the command line arguments
@@ -437,18 +526,12 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JCheckBox jCheckBoxTodosDisci;
+    private javax.swing.JCheckBox jCheckBoxTodosEven;
+    private javax.swing.JCheckBox jCheckBoxTodosProf;
+    private javax.swing.JComboBox<String> jComboBoxDisc;
+    private javax.swing.JComboBox<String> jComboBoxEvento;
+    private javax.swing.JComboBox<String> jComboBoxProf;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -466,8 +549,10 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtIdDisciplina;
+    private javax.swing.JTextField txtIdEvento;
     private javax.swing.JTextField txtIdProfessor;
     // End of variables declaration//GEN-END:variables
 }
